@@ -19,13 +19,14 @@
   }
 
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
-  html{ scroll-behavior:smooth; overflow-x:hidden; width:100%; }
+  html{ scroll-behavior:smooth; overflow-x:hidden; width:100%; touch-action:pan-y; }
   body{
     margin:0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     background: linear-gradient(180deg, var(--cream) 0%, var(--cream-2) 100%);
     color: var(--ink);
     width:100%;
+    touch-action:pan-y;
     -webkit-font-smoothing:antialiased;
   }
   h1,h2,h3{
@@ -545,10 +546,10 @@
       el.className = 'particle';
       el.textContent = glyphs[Math.floor(Math.random()*glyphs.length)];
       var size = 12 + Math.random()*16;
-      var left = Math.random()*100;
+      var left = 6 + Math.random()*88;
       var duration = 9 + Math.random()*10;
       var delay = Math.random()*12;
-      var drift = (Math.random()*80 - 40) + 'px';
+      var drift = (Math.random()*40 - 20) + 'px';
       el.style.left = left + 'vw';
       el.style.fontSize = size + 'px';
       el.style.animationDuration = duration + 's';
