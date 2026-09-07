@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>a little world, for you</title>
+<style>
+  :root{
+    --wine:#5c1a34;
+    --wine-deep:#3d0f22;
+    --wine-bright:#8a2c4f;
+    --pink:#f2a6b7;
+    --pink-soft:#f7d3da;
+    --cream:#fdf3ec;
+    --cream-2:#fff9f4;
+    --ink:#3a1a24;
+    --gold:#d8a657;
+    --shadow: 0 10px 30px rgba(92,26,52,0.18);
+  }
+
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html{ scroll-behavior:smooth; overflow-x:hidden; width:100%; touch-action:pan-y; }
+  body{
+    margin:0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: linear-gradient(180deg, var(--cream) 0%, var(--cream-2) 100%);
+    color: var(--ink);
+    width:100%;
+    touch-action:pan-y;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+    font-weight:700;
+    margin:0 0 0.5em;
+    line-height:1.15;
+    letter-spacing:-0.01em;
+  }
+  p{ line-height:1.65; font-size:1.05rem; margin:0 0 1em; }
+  section{ position:relative; padding: 5rem 1.3rem; max-width:620px; margin:0 auto; }
+  .eyebrow{
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    font-size:0.72rem;
+    font-weight:600;
+    color: var(--wine-bright);
+    opacity:0.75;
+  }
+  ::selection{ background: var(--pink); color: var(--wine-deep); }
+
+  /* ---------- LOADER ---------- */
+  #loader{
+    position:fixed; inset:0; z-index:999;
+    background: linear-gradient(160deg, var(--wine-deep), var(--wine));
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    transition: opacity 0.7s ease, visibility 0.7s ease;
+  }
+  #loader.hide{ opacity:0; visibility:hidden; pointer-events:none; }
+  .loader-heart{ font-size:2.2rem; animation: pulseHeart 1.1s ease-in-out infinite; }
+  @keyframes pulseHeart{ 0%,100%{ transform:scale(1);} 50%{ transform:scale(1.25);} }
+  .loader-text{ color: var(--pink-soft); font-size:0.85rem; letter-spacing:0.08em; margin-top:1rem; opacity:0.85; }
+
+  /* ---------- PARTICLES ---------- */
+  #particles{ position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:1; }
+  .particle{ position:absolute; top:110%; opacity:0; animation-name: floatUp; animation-timing-function: ease-in; animation-iteration-count: infinite; will-change: transform, opacity; }
+  @keyframes floatUp{
+    0%{ transform: translate(0,0) rotate(0deg); opacity:0; }
+    10%{ opacity:0.5; }
+    85%{ opacity:0.4; }
+    100%{ transform: translate(var(--drift,20px), -115vh) rotate(360deg); opacity:0; }
+  }
+
+  /* ---------- LANDING ---------- */
+  #landing{
+    min-height:100svh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding: 2rem 1.3rem; position:relative; z-index:2;
+  }
+  #landing h1{ font-size: clamp(1.9rem, 8vw, 2.6rem); color: var(--wine-deep); max-width: 480px; }
+  #landing .sub{ color: var(--wine-bright); max-width:420px; font-size:1.02rem; margin-top:0.4rem; }
+
+  .progress-wrap{ margin-top:2rem; width:100%; max-width:280px; }
+  .progress-label{ font-size:0.8rem; color:var(--wine-bright); margin-bottom:0.5rem; letter-spacing:0.02em; }
+  .progress-track{ width:100%; height:8px; border-radius:999px; background: rgba(92,26,52,0.12); overflow:hidden; }
+  .progress-fill{ height:100%; border-radius:999px; background: linear-gradient(90deg, var(--pink), var(--wine-bright)); width:0%; transition: width 1.4s cubic-bezier(.4,.1,.2,1) 0.3s; }
+
+  .enter-btn{
+    margin-top:2rem; border:none; cursor:pointer; font-size:1.02rem; font-weight:600; font-family:inherit;
+    color: var(--cream-2); padding: 1rem 2.1rem; border-radius: 999px;
+    background: linear-gradient(135deg, var(--wine-bright), var(--wine-deep));
+    box-shadow: var(--shadow); transition: transform 0.18s ease;
+    animation: floatBtn 3s ease-in-out infinite;
+  }
+  @keyframes floatBtn{ 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(-6px);} }
+  .enter-btn:active{ transform: scale(0.94); }
+  .scroll-hint{ position:absolute; bottom:1.6rem; left:50%; transform:translateX(-50%); font-size:1.2rem; color:var(--wine-bright); opacity:0.5; animation: bob 1.8s ease-in-out infinite; }
+  @keyframes bob{ 0%,100%{transform:translate(-50%,0);} 50%{transform:translate(-50%,8px);} }
+
+  /* ---------- MAIN CONTENT ---------- */
+  #main-content{ position:relative; z-index:2; opacity:0; transform: translateY(24px); transition: opacity 0.9s ease, transform 0.9s ease; pointer-events:none; }
+  #main-content.unlocked{ opacity:1; transform:none; pointer-events:auto; }
+  .reveal{ opacity:0; transform: translateY(26px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .reveal.in-view{ opacity:1; transform:none; }
+
+  /* ---------- STATUS PIECE CARDS ---------- */
+  .piece{
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-radius:20px; padding: 1.8rem 1.6rem; box-shadow: var(--shadow);
+    border: 1px solid rgba(92,26,52,0.1);
+    position:relative; overflow:hidden;
+  }
+  .piece + .piece{ margin-top:2rem; }
+  .piece.locked{ background: rgba(255,255,255,0.35); border: 1.5px dashed rgba(92,26,52,0.25); box-shadow:none; }
+
+  .status-tag{
+    display:inline-flex; align-items:center; gap:0.4rem;
+    font-size:0.7rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+    padding:0.3rem 0.7rem; border-radius:999px; margin-bottom:1rem;
+  }
+  .status-done{ background: rgba(92,26,52,0.12); color: var(--wine-deep); }
+  .status-progress{ background: rgba(216,166,87,0.18); color:#8a6414; }
+  .status-locked{ background: rgba(92,26,52,0.06); color: var(--wine-bright); opacity:0.85; }
+
+  .piece h2{ font-size:1.35rem; color: var(--wine-deep); }
+  .piece p{ font-size:0.98rem; margin-bottom:0.4rem; }
+  .piece p:last-child{ margin-bottom:0; }
+  .piece .hint{ font-size:0.9rem; color: var(--wine-bright); opacity:0.85; font-style:italic; }
+
+  .timeline-entry{ display:flex; gap:0.9rem; margin-top:1rem; }
+  .timeline-dot{ flex-shrink:0; width:10px; height:10px; border-radius:50%; background: var(--wine-bright); margin-top:0.4rem; }
+  .timeline-entry.faded .timeline-dot{ background: rgba(92,26,52,0.25); }
+  .timeline-entry.faded p{ opacity:0.6; }
+
+  .lock-icon{ font-size:1.6rem; margin-bottom:0.6rem; display:block; }
+
+  footer{ text-align:center; padding: 3rem 1.3rem 3.5rem; font-size:0.85rem; color: var(--wine-bright); opacity:0.7; }
+
+  @media (min-width:700px){ section{ padding: 6.5rem 1.3rem; } }
+  @media (prefers-reduced-motion: reduce){ *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; } }
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="loader-heart">❤️</div>
+  <div class="loader-text">loading…</div>
+</div>
+
+<div id="particles"></div>
+
+<section id="landing">
+  <div class="eyebrow">Still under construction</div>
+  <h1>A little world, for you. 🌷</h1>
+  <p class="sub">You said you wanted to see how far I've gotten. So — here it is. Not finished. Just yours to watch grow.</p>
+
+  <div class="progress-wrap">
+    <div class="progress-label" id="progressLabel">1 of 5 pieces finished</div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <button class="enter-btn" id="enterBtn">Take a peek 🌚</button>
+  <div class="scroll-hint">↓</div>
+</section>
+
+<div id="main-content">
+
+  <section id="pieces">
+
+    <div class="piece reveal">
+      <div class="status-tag status-done">✓ Finished</div>
+      <h2>A note, for now.</h2>
+      <p>I told you I was building you something, and I meant it. This is that something — still being made, piece by piece, whenever I get a quiet minute to think about you properly.</p>
+      <p>It's not going to be one big reveal. You're going to watch it grow, a little at a time, the same way I'm still figuring out all the ways I want to show you this. Consider this the first piece — proof that it's real, and that it's actually happening.</p>
+    </div>
+
+    <div class="piece reveal">
+      <div class="status-tag status-progress">◐ In progress</div>
+      <h2>Our story so far</h2>
+      <div class="timeline-entry">
+        <div class="timeline-dot"></div>
+        <p><b>Chapter one.</b> I fell asleep on you mid-wait, panicked when I woke up, and ended up coding you an entire apology website about it. You forgave me. Eventually. After making me beg a little. Fair.</p>
+      </div>
+      <div class="timeline-entry faded">
+        <div class="timeline-dot"></div>
+        <p><b>Chapter two.</b> Still being written — this is only three weeks in, after all. More chapters coming as we make them.</p>
+      </div>
+    </div>
+
+    <div class="piece locked reveal">
+      <div class="status-tag status-locked">○ Not started</div>
+      <h2>The garden 🌸</h2>
+      <p class="hint">I'm waiting on exactly one clue from you before I can build this one: what's your favorite flower? Tell me, and I'll grow it here.</p>
+    </div>
+
+    <div class="piece locked reveal">
+      <div class="status-tag status-locked">○ Not started</div>
+      <h2>Reasons I love you</h2>
+      <p class="hint">0 written down so far — not because there's nothing, but because there's too much to just list off the top of my head. I want to actually sit and get these right.</p>
+    </div>
+
+    <div class="piece locked reveal">
+      <div class="status-tag status-locked">○ Locked</div>
+      <span class="lock-icon">🔒</span>
+      <h2>The letter</h2>
+      <p class="hint">This one's for last. It's the part I want to get exactly right, so I'm still finding the words. When it's ready, it'll be worth the wait.</p>
+    </div>
+
+  </section>
+
+  <footer>This page grows as I do. Made with love (and it's genuinely not done yet) — your boyfriend ❤️</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  window.addEventListener('load', function(){
+    setTimeout(function(){ document.getElementById('loader').classList.add('hide'); }, 800);
+    setTimeout(function(){ document.getElementById('progressFill').style.width = '20%'; }, 400);
+  });
+
+  function initParticles(){
+    var wrap = document.getElementById('particles');
+    var glyphs = ['❤️','💕','✨','💗'];
+    var count = window.innerWidth < 600 ? 12 : 18;
+    for(var i=0;i<count;i++){
+      var el = document.createElement('div');
+      el.className = 'particle';
+      el.textContent = glyphs[Math.floor(Math.random()*glyphs.length)];
+      var size = 12 + Math.random()*16;
+      var left = 6 + Math.random()*88;
+      var duration = 9 + Math.random()*10;
+      var delay = Math.random()*12;
+      var drift = (Math.random()*40 - 20) + 'px';
+      el.style.left = left + 'vw';
+      el.style.fontSize = size + 'px';
+      el.style.animationDuration = duration + 's';
+      el.style.animationDelay = '-' + delay + 's';
+      el.style.setProperty('--drift', drift);
+      wrap.appendChild(el);
+    }
+  }
+  initParticles();
+
+  var mainContent = document.getElementById('main-content');
+  var enterBtn = document.getElementById('enterBtn');
+  enterBtn.addEventListener('click', function(){
+    if(navigator.vibrate){ try{ navigator.vibrate(12); }catch(e){} }
+    mainContent.classList.add('unlocked');
+    setTimeout(function(){
+      document.getElementById('pieces').scrollIntoView({behavior:'smooth', block:'start'});
+    }, 120);
+  });
+
+  var revealTargets = document.querySelectorAll('.reveal');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealTargets.forEach(function(t){ io.observe(t); });
+
+})();
+</script>
+
+</body>
+</html>
