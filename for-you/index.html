@@ -133,6 +133,57 @@
 
   .lock-icon{ font-size:1.6rem; margin-bottom:0.6rem; display:block; }
 
+  /* ---------- ROSE BOUQUET ---------- */
+  .bouquet{
+    position:relative; display:flex; align-items:flex-end; justify-content:center; gap:0.4rem;
+    margin: 0.5rem 0 1.4rem; height:200px;
+  }
+  .rose-unit{ position:relative; width:74px; height:180px; opacity:0; transform: scale(0.5) translateY(14px); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(.34,1.2,.4,1); }
+  .rose-unit.bloom{ opacity:1; transform:none; }
+  .rose-unit:nth-child(1){ transition-delay:0.05s; }
+  .rose-unit:nth-child(2){ transition-delay:0.25s; height:200px; }
+  .rose-unit:nth-child(3){ transition-delay:0.45s; }
+
+  .stem{ position:absolute; bottom:0; left:50%; width:3px; height:72%; background: linear-gradient(180deg, #7a9b6e, #4f6b45); transform: translateX(-50%); border-radius:3px; }
+  .leaf{ position:absolute; width:22px; height:12px; background: linear-gradient(135deg,#8fb37f,#587a4c); border-radius: 0 100% 0 100%; }
+  .leaf.l1{ bottom:38%; left:50%; transform: translateX(-90%) rotate(-25deg); }
+  .leaf.l2{ bottom:26%; left:50%; transform: translateX(-10%) rotate(25deg) scaleX(-1); }
+
+  .rose{
+    position:absolute; top:0; left:50%; width:56px; height:56px; transform: translateX(-50%);
+    filter: drop-shadow(0 6px 8px rgba(92,26,52,0.16));
+    animation: sway 4.5s ease-in-out infinite;
+  }
+  .rose-unit:nth-child(2) .rose{ animation-delay:-1.5s; }
+  .rose-unit:nth-child(3) .rose{ animation-delay:-3s; }
+  @keyframes sway{ 0%,100%{ transform: translateX(-50%) rotate(-2deg); } 50%{ transform: translateX(-50%) rotate(2deg); } }
+
+  .petal{
+    position:absolute; left:50%; top:50%; border-radius:50%;
+    transform-origin:50% 100%;
+  }
+  .petal-outer{
+    width:26px; height:34px; margin-left:-13px; margin-top:-27px;
+    background: radial-gradient(ellipse at 40% 25%, #ffffff 0%, #f6efe6 55%, #e3d2bd 100%);
+    box-shadow: inset -2px -2px 5px rgba(92,26,52,0.05);
+  }
+  .petal-inner{
+    width:18px; height:24px; margin-left:-9px; margin-top:-19px;
+    background: radial-gradient(ellipse at 40% 25%, #ffffff 0%, #f9f3ea 60%, #ecdfcd 100%);
+  }
+  .rose::after{
+    content:""; position:absolute; top:50%; left:50%; width:11px; height:11px;
+    background: radial-gradient(circle at 35% 30%, #fbeee0, #e6cdb2);
+    border-radius:50%; transform: translate(-50%,-50%); z-index:40;
+    box-shadow: 0 0 4px rgba(92,26,52,0.15);
+  }
+  .ribbon{
+    position:absolute; bottom:26%; left:50%; width:120px; height:15px;
+    background: linear-gradient(135deg, var(--wine-bright), var(--wine));
+    transform: translateX(-50%) rotate(-3deg); border-radius:3px;
+    box-shadow: var(--shadow); z-index:1;
+  }
+
   footer{ text-align:center; padding: 3rem 1.3rem 3.5rem; font-size:0.85rem; color: var(--wine-bright); opacity:0.7; }
 
   @media (min-width:700px){ section{ padding: 6.5rem 1.3rem; } }
@@ -154,7 +205,7 @@
   <p class="sub">You said you wanted to see how far I've gotten. So — here it is. Not finished. Just yours to watch grow.</p>
 
   <div class="progress-wrap">
-    <div class="progress-label" id="progressLabel">1 of 5 pieces finished</div>
+    <div class="progress-label" id="progressLabel">2 of 5 pieces finished</div>
     <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
   </div>
 
@@ -186,10 +237,29 @@
       </div>
     </div>
 
-    <div class="piece locked reveal">
-      <div class="status-tag status-locked">○ Not started</div>
-      <h2>The garden 🌸</h2>
-      <p class="hint">I'm waiting on exactly one clue from you before I can build this one: what's your favorite flower? Tell me, and I'll grow it here.</p>
+    <div class="piece reveal" id="gardenPiece">
+      <div class="status-tag status-done">✓ Finished</div>
+      <h2>The garden 🤍</h2>
+      <div class="bouquet" id="bouquet">
+        <div class="rose-unit">
+          <div class="stem"></div>
+          <div class="leaf l1"></div>
+          <div class="rose"></div>
+        </div>
+        <div class="rose-unit">
+          <div class="stem"></div>
+          <div class="leaf l1"></div><div class="leaf l2"></div>
+          <div class="rose"></div>
+        </div>
+        <div class="rose-unit">
+          <div class="stem"></div>
+          <div class="leaf l2"></div>
+          <div class="rose"></div>
+        </div>
+        <div class="ribbon"></div>
+      </div>
+      <p>White roses. Because that's what you love, and now I know it too.</p>
+      <p class="hint">The rest of the garden can keep growing — this corner's done.</p>
     </div>
 
     <div class="piece locked reveal">
@@ -216,7 +286,7 @@
 
   window.addEventListener('load', function(){
     setTimeout(function(){ document.getElementById('loader').classList.add('hide'); }, 800);
-    setTimeout(function(){ document.getElementById('progressFill').style.width = '20%'; }, 400);
+    setTimeout(function(){ document.getElementById('progressFill').style.width = '40%'; }, 400);
   });
 
   function initParticles(){
@@ -242,6 +312,27 @@
   }
   initParticles();
 
+  function buildRose(el){
+    var outer = 8, inner = 5;
+    for(var i=0;i<outer;i++){
+      var ang = i*(360/outer);
+      var p = document.createElement('div');
+      p.className = 'petal petal-outer';
+      p.style.transform = 'rotate('+ang+'deg) translateY(-6px)';
+      p.style.zIndex = 10+i;
+      el.appendChild(p);
+    }
+    for(var j=0;j<inner;j++){
+      var ang2 = j*(360/inner) + 24;
+      var p2 = document.createElement('div');
+      p2.className = 'petal petal-inner';
+      p2.style.transform = 'rotate('+ang2+'deg) translateY(-3px)';
+      p2.style.zIndex = 30+j;
+      el.appendChild(p2);
+    }
+  }
+  document.querySelectorAll('.rose').forEach(buildRose);
+
   var mainContent = document.getElementById('main-content');
   var enterBtn = document.getElementById('enterBtn');
   enterBtn.addEventListener('click', function(){
@@ -262,6 +353,19 @@
     });
   }, { threshold: 0.15 });
   revealTargets.forEach(function(t){ io.observe(t); });
+
+  var bouquet = document.getElementById('bouquet');
+  if(bouquet){
+    var bio = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          bouquet.querySelectorAll('.rose-unit').forEach(function(r){ r.classList.add('bloom'); });
+          bio.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    bio.observe(bouquet);
+  }
 
 })();
 </script>
