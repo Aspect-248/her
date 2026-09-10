@@ -332,14 +332,96 @@
   }
   .scratch-canvas{ position:absolute; inset:0; width:100%; height:100%; cursor:pointer; touch-action:none; }
 
-  /* brag card */
-  .brag-card{ background: linear-gradient(155deg, var(--wine-deep), var(--wine-bright)); color: var(--cream-2); text-align:center; }
-  .brag-inner{ padding: 1rem 0 0.5rem; }
-  .brag-emoji{ font-size:2rem; margin-bottom:0.6rem; }
-  .brag-line{ font-family: Georgia, serif; font-weight:700; font-size:1.4rem; margin-bottom:0.8rem; }
-  .brag-stats{ font-size:1.05rem; font-weight:700; color: var(--pink-soft); margin-bottom:0.5rem; }
-  .brag-sub{ font-size:0.85rem; opacity:0.85; }
-  .brag-card .hint{ color: var(--pink-soft); opacity:0.85; margin-top:1.2rem; }
+  /* her colors */
+  html.her-colors{
+    --wine:#4a2065;
+    --wine-deep:#2e1140;
+    --wine-bright:#7b3fa0;
+    --pink:#c9a6e9;
+    --pink-soft:#e5d4f5;
+    --cream:#f8f3fd;
+    --cream-2:#fdfbff;
+    --ink:#2b1a3a;
+    --gold:#d8a657;
+    --shadow: 0 10px 30px rgba(74,32,101,0.18);
+  }
+  .theme-btn{
+    margin-top:1.4rem; border:none; cursor:pointer; font-family:inherit;
+    font-size:1rem; font-weight:600; color: var(--cream-2);
+    padding:1rem 1.9rem; border-radius:999px;
+    background: linear-gradient(135deg, #7b3fa0, #4a2065);
+    box-shadow: var(--shadow); transition: transform 0.16s ease;
+  }
+  .theme-btn:active{ transform: scale(0.95); }
+  .theme-veil{
+    position:fixed; inset:0; z-index:300; pointer-events:none;
+    background: radial-gradient(circle at 50% 55%, #e5d4f5, #7b3fa0);
+    opacity:0; transition: opacity 0.42s ease;
+  }
+  .theme-veil.on{ opacity:1; }
+  .theme-toast{
+    position:fixed; left:50%; bottom:2.2rem; transform: translate(-50%, 14px);
+    z-index:310; pointer-events:none; opacity:0;
+    background: var(--wine-deep); color: var(--cream-2);
+    padding:0.8rem 1.4rem; border-radius:999px; font-size:0.92rem; font-weight:600;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    max-width: calc(100vw - 2.6rem); text-align:center;
+  }
+  .theme-toast.on{ opacity:1; transform: translate(-50%, 0); }
+
+  /* daily note */
+  .daily-piece{ text-align:center; background: linear-gradient(160deg, rgba(242,166,183,0.16), rgba(255,255,255,0.6)); }
+  .daily-date{ font-size:0.72rem; text-transform:uppercase; letter-spacing:0.12em; color: var(--wine-bright); opacity:0.8; }
+  .daily-line{
+    font-family: Georgia, "Iowan Old Style", serif; font-size:1.22rem; line-height:1.5;
+    color: var(--wine-deep); margin:0.9rem auto 0.8rem; max-width:420px; font-weight:700;
+  }
+  .daily-foot{ font-size:0.78rem; color: var(--wine-bright); opacity:0.7; font-style:italic; }
+
+  /* open when */
+  .ow-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap:0.8rem; margin-top:1.4rem; }
+  .ow-card{
+    display:flex; flex-direction:column; align-items:center; gap:0.5rem;
+    background: var(--cream-2); border:1.5px dashed rgba(92,26,52,0.22);
+    border-radius:16px; padding:1.1rem 0.7rem; cursor:pointer; font-family:inherit;
+    box-shadow: 0 4px 14px rgba(92,26,52,0.07);
+    transition: transform 0.16s ease, box-shadow 0.2s ease;
+  }
+  .ow-card:active{ transform: scale(0.96); }
+  .ow-card:hover{ box-shadow: 0 10px 22px rgba(92,26,52,0.13); }
+  .ow-seal{ font-size:1.5rem; }
+  .ow-label{ font-size:0.85rem; color: var(--wine-deep); font-weight:600; line-height:1.35; text-align:center; }
+  .ow-overlay{
+    position:fixed; inset:0; z-index:210; background: rgba(61,15,34,0.85);
+    display:flex; align-items:center; justify-content:center; padding:1.5rem;
+    opacity:0; pointer-events:none; transition: opacity 0.35s ease;
+  }
+  .ow-overlay.show{ opacity:1; pointer-events:auto; }
+  .ow-note{
+    background: var(--cream-2); border-radius:20px; padding:2rem 1.6rem;
+    max-width:420px; max-height:80vh; overflow-y:auto; text-align:center;
+    box-shadow:0 20px 50px rgba(0,0,0,0.3);
+    transform: translateY(18px) scale(0.96); transition: transform 0.4s cubic-bezier(.34,1.4,.5,1);
+  }
+  .ow-overlay.show .ow-note{ transform:none; }
+  .ow-note-title{
+    font-family: Georgia, serif; font-size:0.78rem; text-transform:uppercase;
+    letter-spacing:0.1em; color: var(--wine-bright); margin-bottom:1rem;
+  }
+  .ow-note-body{ font-size:1rem; line-height:1.75; color: var(--ink); text-align:left; }
+  .ow-close{
+    margin-top:1.2rem; border:none; background: var(--wine-bright); color:#fff;
+    padding:0.7rem 1.6rem; border-radius:999px; font-weight:600; cursor:pointer; font-family:inherit;
+  }
+
+  /* night sky */
+  .sky-piece{ position:relative; overflow:hidden; background: linear-gradient(170deg, #1d1030, #3a1d52 60%, #4a2065); border-color: rgba(255,255,255,0.1); }
+  .sky-canvas{ position:absolute; inset:0; width:100%; height:100%; }
+  .sky-text{ position:relative; z-index:2; text-align:center; padding:1.6rem 0 1.2rem; }
+  .sky-line{ font-family: Georgia, serif; font-size:1.7rem; font-weight:700; color:#f6efff; }
+  .sky-line-2{ font-family: Georgia, serif; font-size:1.7rem; font-weight:700; color:#c9a6e9; margin-top:0.1rem; }
+  .sky-sub{ font-size:0.92rem; color: rgba(246,239,255,0.75); margin-top:1rem; max-width:300px; margin-left:auto; margin-right:auto; }
 
   /* easter egg */
   .footer-heart{ cursor:pointer; display:inline-block; transition: transform 0.15s ease; }
@@ -399,6 +481,12 @@
       <h2>A little note, first.</h2>
       <p>This is just how I show love, honestly. I'm not really a grand-gesture kind of person by default, but I like building things, and somewhere along the way that became my way of saying I care.</p>
       <p>So instead of just telling you how I feel, I made you a whole little world instead. Every piece on this page is real, made specifically for you, because you're specifically who I was thinking about while I made it.</p>
+    </div>
+
+    <div class="piece daily-piece reveal" id="dailyPiece">
+      <div class="daily-date" id="dailyDate"></div>
+      <div class="daily-line" id="dailyLine"></div>
+      <div class="daily-foot">a new one every day 🤍</div>
     </div>
 
     <div class="piece reveal" id="gardenPiece">
@@ -614,6 +702,40 @@
       <p class="reveal signoff">&ldquo;We actually made it.&rdquo; ❤️</p>
     </div>
 
+    <div class="piece reveal" id="owPiece">
+      <div class="status-tag status-done">✓ Finished</div>
+      <h2>Open when… ✉️</h2>
+      <p class="hint">Tap whichever one matches how you're feeling. They're not going anywhere.</p>
+      <div class="ow-grid" id="owGrid">
+        <button class="ow-card" data-title="open when you miss me" data-note="Then we're even, because I promise I'm missing you worse. Distance is the annoying part of our story, not the ending of it. One day I'll be sitting right next to you and you'll be telling me to stop touching your face. Until then, text me. I don't care what time it is. I'd rather lose sleep than have you sitting there missing me quietly.">
+          <span class="ow-seal">💜</span><span class="ow-label">when you miss me</span>
+        </button>
+        <button class="ow-card" data-title="open when you're sad" data-note="First, you don't have to explain it or justify it or make it make sense. You're allowed to just be sad. Second, I'm here. Not the &lsquo;text me if you need anything&rsquo; kind of here, the &lsquo;talk to me right now, I'm not going anywhere&rsquo; kind. And if you don't feel like talking, that's fine too. I'll just be annoying until you smile by accident. That's my specialty.">
+          <span class="ow-seal">🩶</span><span class="ow-label">when you're sad</span>
+        </button>
+        <button class="ow-card" data-title="open when you can't sleep" data-note="Same, probably 😭. If it's late and your brain won't shut up, call me. Genuinely. I'd rather be tired tomorrow than know you were lying there awake by yourself. And if I don't pick up, it's because my body betrayed me again. You already know I have a criminal record for that one 🌚">
+          <span class="ow-seal">🌙</span><span class="ow-label">when you can't sleep</span>
+        </button>
+        <button class="ow-card" data-title="open when you're mad at me" data-note="Fair. I probably deserve it. But here's what I want you to know before you decide anything: I'd so much rather you tell me exactly what I did than go quiet on me. I can fix things I know about. And if I messed up, I'm going to apologise properly, not the lazy kind. You've seen the lengths I'll go to 🌚. Just don't let it sit and get heavy. Come argue with me, my love.">
+          <span class="ow-seal">🌚</span><span class="ow-label">when you're mad at me</span>
+        </button>
+        <button class="ow-card" data-title="open when you need to hear it" data-note="You're not too much. You're not a burden. You're not hard to love. I don't know which one you needed today, so take all three. I chose you on purpose, and I keep choosing you on the boring days, the stressful days, and the days you don't feel like yourself. That isn't going anywhere.">
+          <span class="ow-seal">🤍</span><span class="ow-label">when you need to hear it</span>
+        </button>
+        <button class="ow-card" data-title="open when you're happy" data-note="Tell me. Right now. I want the whole story, including the details you think are boring. I don't just want to be the person you come to when things are heavy. I want the good stuff too. Your wins are genuinely my favourite thing to hear about.">
+          <span class="ow-seal">✨</span><span class="ow-label">when you're happy</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="ow-overlay" id="owOverlay">
+      <div class="ow-note">
+        <div class="ow-note-title" id="owNoteTitle"></div>
+        <p class="ow-note-body" id="owNoteBody"></p>
+        <button class="ow-close" id="owClose">close</button>
+      </div>
+    </div>
+
     <div class="piece reveal" id="bucketPiece">
       <div class="status-tag status-done">✓ Finished</div>
       <h2>Things we're going to do 📝</h2>
@@ -641,6 +763,15 @@
       </div>
       <p>Thousands of miles, on paper.</p>
       <p class="hint">Zero, in every way that's actually mattered so far.</p>
+    </div>
+
+    <div class="piece sky-piece reveal" id="skyPiece">
+      <canvas class="sky-canvas" id="skyCanvas"></canvas>
+      <div class="sky-text">
+        <div class="sky-line">Same sky.</div>
+        <div class="sky-line-2">Different windows.</div>
+        <p class="sky-sub">Whatever you're looking up at tonight, I'm under it too.</p>
+      </div>
     </div>
 
     <div class="piece reveal" id="clockPiece">
@@ -705,20 +836,21 @@
       </div>
     </div>
 
-    <div class="piece brag-card reveal" id="bragPiece">
-      <div class="brag-inner">
-        <div class="brag-emoji">😭❤️</div>
-        <div class="brag-line">He made me a whole website</div>
-        <div class="brag-stats" id="bragStats">-- weeks in</div>
-        <div class="brag-sub">1 coded apology &middot; infinite white roses &middot; still not done</div>
-      </div>
-      <p class="hint">Made for screenshotting. Go ahead.</p>
+    <div class="piece reveal" id="themePiece">
+      <div class="status-tag status-done">✓ Finished</div>
+      <h2>One last thing 💜</h2>
+      <p>I built this whole thing in my colors. Deep reds, warm creams, the stuff I reach for without thinking.</p>
+      <p>But it was never really mine, was it.</p>
+      <button class="theme-btn" id="themeBtn">Show me it in my colors 💜</button>
     </div>
 
   </section>
 
   <footer>This page grows as I do. Made with love, your boyfriend <span id="footerHeart" class="footer-heart">❤️</span></footer>
 </div>
+
+<div class="theme-veil" id="themeVeil"></div>
+<div class="theme-toast" id="themeToast"></div>
 
 <div class="egg-overlay" id="eggOverlay">
   <div class="egg-panel">
@@ -900,12 +1032,11 @@
     setInterval(tick, 15000);
   })();
 
-  // days-since counter + brag card stat
+  // days-since counter
   (function(){
     var START = new Date('2026-08-05T14:00:00+03:00').getTime();
     var dEl = document.getElementById('cDays'), hEl = document.getElementById('cHours'),
         mEl = document.getElementById('cMins'), sEl = document.getElementById('cSecs');
-    var bragStats = document.getElementById('bragStats');
     if(!dEl) return;
     function tick(){
       var diff = Date.now() - START;
@@ -919,10 +1050,6 @@
       hEl.textContent = hours;
       mEl.textContent = mins;
       sEl.textContent = secs;
-      if(bragStats){
-        var weeks = Math.floor(days/7);
-        bragStats.textContent = weeks + (weeks === 1 ? ' week in' : ' weeks in');
-      }
     }
     tick();
     setInterval(tick, 1000);
@@ -992,6 +1119,163 @@
     canvas.addEventListener('touchstart', start, { passive:true });
     canvas.addEventListener('touchmove', move, { passive:false });
     canvas.addEventListener('touchend', end);
+  })();
+
+  // a different note every day
+  (function(){
+    var lineEl = document.getElementById('dailyLine');
+    var dateEl = document.getElementById('dailyDate');
+    if(!lineEl) return;
+    var notes = [
+      "Whatever today throws at you, you've got me in your corner.",
+      "Reminder: I'm still thinking about you. That's the whole message.",
+      "You're doing better than you think you are, my love.",
+      "If nobody has told you today, you're loved. Loudly. By me.",
+      "Somewhere in Cairo I'm being annoying about you to nobody in particular.",
+      "Drink water. Eat something. Text me. In that order 🌚",
+      "You crossed my mind today. And yesterday. And the day before that.",
+      "Whatever mood you woke up in, it's allowed.",
+      "Still my favourite person. That hasn't changed since yesterday.",
+      "One day closer to actually being in the same room as you.",
+      "I hope today is soft on you.",
+      "If today feels heavy, hand me some of it. That's what I'm here for.",
+      "Currently missing you at an unreasonable volume.",
+      "You're the best thing that's happened to me in a very long time.",
+      "Whatever you're overthinking right now, I'm on your side about it.",
+      "Small reminder that you're stuck with me 🌚",
+      "Today's note: I love you. That's it. That's the note.",
+      "I hope something makes you laugh today. Preferably me.",
+      "Proud of you. For whatever it is you're carrying right now.",
+      "Still here. Still yours."
+    ];
+    var now = new Date();
+    var start = new Date(now.getFullYear(), 0, 0);
+    var dayOfYear = Math.floor((now - start) / 86400000);
+    lineEl.textContent = notes[dayOfYear % notes.length];
+    dateEl.textContent = new Intl.DateTimeFormat('en-GB', { weekday:'long', day:'numeric', month:'long' }).format(now);
+  })();
+
+  // open when notes
+  (function(){
+    var grid = document.getElementById('owGrid');
+    var overlay = document.getElementById('owOverlay');
+    var titleEl = document.getElementById('owNoteTitle');
+    var bodyEl = document.getElementById('owNoteBody');
+    var closeBtn = document.getElementById('owClose');
+    if(!grid || !overlay) return;
+
+    grid.querySelectorAll('.ow-card').forEach(function(card){
+      card.addEventListener('click', function(){
+        if(navigator.vibrate){ try{ navigator.vibrate(10); }catch(e){} }
+        titleEl.textContent = card.getAttribute('data-title');
+        bodyEl.innerHTML = card.getAttribute('data-note');
+        overlay.classList.add('show');
+      });
+    });
+    function close(){ overlay.classList.remove('show'); }
+    closeBtn.addEventListener('click', close);
+    overlay.addEventListener('click', function(e){ if(e.target === overlay) close(); });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') close(); });
+  })();
+
+  // night sky
+  (function(){
+    var canvas = document.getElementById('skyCanvas');
+    if(!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var stars = [];
+    var raf = null;
+
+    function build(){
+      var rect = canvas.getBoundingClientRect();
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      stars = [];
+      var count = Math.round(rect.width * rect.height / 2600);
+      for(var i = 0; i < count; i++){
+        stars.push({
+          x: Math.random() * rect.width,
+          y: Math.random() * rect.height,
+          r: 0.5 + Math.random() * 1.4,
+          drift: 0.04 + Math.random() * 0.10,
+          phase: Math.random() * Math.PI * 2,
+          speed: 0.6 + Math.random() * 1.6
+        });
+      }
+    }
+
+    function draw(t){
+      var rect = canvas.getBoundingClientRect();
+      ctx.clearRect(0, 0, rect.width, rect.height);
+      for(var i = 0; i < stars.length; i++){
+        var s = stars[i];
+        s.x += s.drift;
+        if(s.x > rect.width + 2) s.x = -2;
+        var twinkle = 0.45 + 0.55 * Math.abs(Math.sin(t/1000 * s.speed + s.phase));
+        ctx.globalAlpha = twinkle;
+        ctx.fillStyle = i % 7 === 0 ? '#c9a6e9' : '#ffffff';
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      raf = requestAnimationFrame(draw);
+    }
+
+    build();
+    window.addEventListener('resize', build);
+
+    var sio = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          if(!raf) raf = requestAnimationFrame(draw);
+        } else if(raf){
+          cancelAnimationFrame(raf);
+          raf = null;
+        }
+      });
+    }, { threshold: 0.05 });
+    sio.observe(canvas);
+  })();
+
+  // her colors
+  (function(){
+    var btn = document.getElementById('themeBtn');
+    var veil = document.getElementById('themeVeil');
+    var toast = document.getElementById('themeToast');
+    var root = document.documentElement;
+    var KEY = 'loml-hercolors';
+    if(!btn) return;
+
+    var saved = null;
+    try{ saved = localStorage.getItem(KEY); }catch(e){}
+    if(saved === 'on'){
+      root.classList.add('her-colors');
+      btn.textContent = 'Put it back in his colors 🍷';
+    }
+
+    var toastTimer = null;
+    function showToast(msg){
+      toast.textContent = msg;
+      toast.classList.add('on');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function(){ toast.classList.remove('on'); }, 4200);
+    }
+
+    btn.addEventListener('click', function(){
+      if(navigator.vibrate){ try{ navigator.vibrate(14); }catch(e){} }
+      veil.classList.add('on');
+      setTimeout(function(){
+        var nowOn = !root.classList.contains('her-colors');
+        root.classList.toggle('her-colors', nowOn);
+        btn.textContent = nowOn ? 'Put it back in his colors 🍷' : 'Show me it in my colors 💜';
+        try{ localStorage.setItem(KEY, nowOn ? 'on' : 'off'); }catch(e){}
+        veil.classList.remove('on');
+        showToast(nowOn ? 'Purple. Because it\'s yours. 💜' : 'Back to mine, then 🍷');
+      }, 430);
+    });
   })();
 
   // hidden easter egg on the footer heart
