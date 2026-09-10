@@ -257,6 +257,91 @@
   }
   .bouquet.bloom .ribbon{ opacity:1; transform: translateX(-50%) rotate(-3deg) scaleX(1); }
 
+  /* ---------- BUCKET LIST ---------- */
+  .bucket-list{ list-style:none; padding:0; margin:1.4rem 0 0; display:flex; flex-direction:column; gap:0.7rem; }
+  .bucket-list li{
+    display:flex; align-items:center; gap:0.8rem; background: var(--cream-2);
+    border-radius:14px; padding:0.85rem 1rem; box-shadow: 0 4px 14px rgba(92,26,52,0.06);
+    cursor:pointer; user-select:none; transition: transform 0.15s ease;
+  }
+  .bucket-list li:active{ transform: scale(0.97); }
+  .bucket-check{
+    width:24px; height:24px; border-radius:50%; border:2px solid var(--wine-bright);
+    flex-shrink:0; position:relative; transition: background 0.25s ease, border-color 0.25s ease;
+  }
+  .bucket-check::after{
+    content:"✓"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    color:#fff; font-size:0.8rem; opacity:0; transform:scale(0.5);
+    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(.34,1.56,.64,1);
+  }
+  .bucket-list li.checked .bucket-check{ background: var(--wine-bright); border-color: var(--wine-bright); }
+  .bucket-list li.checked .bucket-check::after{ opacity:1; transform:scale(1); }
+  .bucket-txt{ font-size:0.98rem; transition: color 0.25s ease; }
+  .bucket-list li.checked .bucket-txt{ color: var(--wine-bright); text-decoration: line-through; text-decoration-color: rgba(138,44,79,0.4); }
+
+  /* ---------- DISTANCE ---------- */
+  .distance-scene{ position:relative; height:150px; margin:1.6rem 0 1.8rem; }
+  .distance-path{ position:absolute; left:0; top:0; width:100%; height:100%; }
+  .distance-path path{ fill:none; stroke: var(--wine-bright); stroke-width:2; stroke-dasharray:6 7; opacity:0.45; }
+  .pin{ position:absolute; bottom:6px; display:flex; flex-direction:column; align-items:center; gap:0.4rem; }
+  .pin-a{ left:2%; } .pin-b{ right:2%; }
+  .pin-dot{ width:14px; height:14px; border-radius:50%; background: var(--wine-bright); animation: pinpulse 2.2s ease-out infinite; }
+  .pin-b .pin-dot{ background: var(--gold); animation-delay:1.1s; }
+  @keyframes pinpulse{
+    0%{ box-shadow:0 0 0 0 rgba(138,44,79,0.45); } 70%{ box-shadow:0 0 0 14px rgba(138,44,79,0); } 100%{ box-shadow:0 0 0 0 rgba(138,44,79,0); }
+  }
+  .pin-label{ font-size:0.78rem; color: var(--wine-bright); font-weight:600; white-space:nowrap; }
+  .plane{
+    position:absolute; font-size:1.3rem; left:4%; bottom:12px;
+    animation: flyPath 6s ease-in-out infinite;
+  }
+  @keyframes flyPath{
+    0%{ left:4%; bottom:12px; opacity:0; transform:rotate(8deg); }
+    8%{ opacity:1; }
+    50%{ left:46%; bottom:92px; transform:rotate(0deg); }
+    92%{ opacity:1; }
+    100%{ left:88%; bottom:12px; opacity:0; transform:rotate(8deg); }
+  }
+
+  /* ---------- CLOCK ---------- */
+  .clock-row{ display:flex; gap:1rem; margin-top:1.6rem; }
+  .clock-card{
+    flex:1; text-align:center; background: var(--cream-2); border-radius:16px;
+    padding:1.4rem 1rem; box-shadow: 0 4px 14px rgba(92,26,52,0.08);
+  }
+  .clock-icon{ font-size:1.8rem; margin-bottom:0.5rem; }
+  .clock-time{ font-family: Georgia, serif; font-size:1.5rem; font-weight:700; color: var(--wine-deep); }
+  .clock-label{ font-size:0.75rem; color: var(--wine-bright); margin-top:0.3rem; text-transform:uppercase; letter-spacing:0.05em; }
+
+  /* ---------- PRAYER ---------- */
+  .prayer-piece{ text-align:center; background: linear-gradient(180deg, rgba(216,166,87,0.1), rgba(255,255,255,0.55)); }
+  .prayer-piece h2{ margin-bottom:1.6rem; }
+  .prayer-piece p{ font-size:1.04rem; line-height:1.8; margin:0 auto 1.1rem; max-width:440px; }
+  .prayer-piece p.signoff{
+    font-family: Georgia, serif; font-style:italic; color: var(--wine-deep);
+    font-weight:700; font-size:1.15rem; margin-top:0.4rem;
+  }
+
+  /* ---------- COUPONS ---------- */
+  .coupon-grid{ display:flex; flex-direction:column; gap:0.9rem; margin-top:1.4rem; }
+  .coupon{
+    display:flex; align-items:stretch; background: var(--cream-2); border-radius:14px;
+    overflow:hidden; box-shadow: 0 4px 14px rgba(92,26,52,0.08);
+    cursor:pointer; border:1.5px dashed rgba(92,26,52,0.25);
+    transition: transform 0.15s ease, opacity 0.3s ease;
+  }
+  .coupon:active{ transform: scale(0.98); }
+  .coupon-txt{ flex:1; padding:1rem; font-size:0.94rem; display:flex; align-items:center; }
+  .coupon-stub{
+    flex-shrink:0; width:74px; display:flex; align-items:center; justify-content:center;
+    background: linear-gradient(135deg, var(--wine-bright), var(--wine-deep));
+    color:#fff; font-size:0.68rem; font-weight:700; letter-spacing:0.05em; text-align:center;
+    border-left:1.5px dashed rgba(255,255,255,0.4); padding:0.4rem; transition: background 0.3s ease;
+  }
+  .coupon.claimed{ opacity:0.6; }
+  .coupon.claimed .coupon-txt{ text-decoration: line-through; text-decoration-color: rgba(92,26,52,0.35); }
+  .coupon.claimed .coupon-stub{ background: linear-gradient(135deg, #9c9c9c, #6b6b6b); }
+
   footer{ text-align:center; padding: 3rem 1.3rem 3.5rem; font-size:0.85rem; color: var(--wine-bright); opacity:0.7; }
 
   @media (min-width:700px){ section{ padding: 6.5rem 1.3rem; } }
@@ -278,7 +363,7 @@
   <p class="sub">You said you wanted to see how far I've gotten. So — here it is. Not finished. Just yours to watch grow.</p>
 
   <div class="progress-wrap">
-    <div class="progress-label" id="progressLabel">3 of 5 pieces finished</div>
+    <div class="progress-label" id="progressLabel">8 pieces built so far — still going</div>
     <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
   </div>
 
@@ -295,19 +380,6 @@
       <h2>A note, for now.</h2>
       <p>I told you I was building you something, and I meant it. This is that something — still being made, piece by piece, whenever I get a quiet minute to think about you properly.</p>
       <p>It's not going to be one big reveal. You're going to watch it grow, a little at a time, the same way I'm still figuring out all the ways I want to show you this. Consider this the first piece — proof that it's real, and that it's actually happening.</p>
-    </div>
-
-    <div class="piece reveal">
-      <div class="status-tag status-progress">◐ In progress</div>
-      <h2>Our story so far</h2>
-      <div class="timeline-entry">
-        <div class="timeline-dot"></div>
-        <p><b>Chapter one.</b> I fell asleep on you mid-wait, panicked when I woke up, and ended up coding you an entire apology website about it. You forgave me. Eventually. After making me beg a little. Fair.</p>
-      </div>
-      <div class="timeline-entry faded">
-        <div class="timeline-dot"></div>
-        <p><b>Chapter two.</b> Still being written — this is only three weeks in, after all. More chapters coming as we make them.</p>
-      </div>
     </div>
 
     <div class="piece reveal" id="gardenPiece">
@@ -361,12 +433,6 @@
       </div>
       <p>White roses. Because that's what you love, and now I know it too.</p>
       <p class="hint">The rest of the garden can keep growing — this corner's done.</p>
-    </div>
-
-    <div class="piece locked reveal">
-      <div class="status-tag status-locked">○ Not started</div>
-      <h2>Reasons I love you</h2>
-      <p class="hint">0 written down so far — not because there's nothing, but because there's too much to just list off the top of my head. I want to actually sit and get these right.</p>
     </div>
 
     <div class="piece letter-piece reveal">
@@ -530,6 +596,77 @@
       <p class="reveal signoff">&ldquo;We actually made it.&rdquo; ❤️</p>
     </div>
 
+    <div class="piece reveal" id="bucketPiece">
+      <div class="status-tag status-done">✓ Finished</div>
+      <h2>Things we're going to do 📝</h2>
+      <p class="hint">Straight from the letter. Tap the ones you're most excited for — it's saved just for you.</p>
+      <ul class="bucket-list" id="bucketList">
+        <li data-id="drives"><span class="bucket-check"></span><span class="bucket-txt">Random drives, no destination</span></li>
+        <li data-id="food"><span class="bucket-check"></span><span class="bucket-txt">Late-night food runs</span></li>
+        <li data-id="hands"><span class="bucket-check"></span><span class="bucket-txt">Holding hands while we walk</span></li>
+        <li data-id="hug"><span class="bucket-check"></span><span class="bucket-txt">A hug after a terrible day</span></li>
+        <li data-id="flowers"><span class="bucket-check"></span><span class="bucket-txt">Me, nervous, at your door with flowers</span></li>
+        <li data-id="lost"><span class="bucket-check"></span><span class="bucket-txt">Getting lost somewhere, on purpose or not</span></li>
+        <li data-id="travel"><span class="bucket-check"></span><span class="bucket-txt">Seeing a new country together</span></li>
+        <li data-id="dance"><span class="bucket-check"></span><span class="bucket-txt">One slow dance, no excuses</span></li>
+      </ul>
+    </div>
+
+    <div class="piece reveal" id="distancePiece">
+      <div class="status-tag status-done">✓ Finished</div>
+      <h2>The distance 🌍</h2>
+      <div class="distance-scene">
+        <svg class="distance-path" viewBox="0 0 260 90" preserveAspectRatio="none"><path d="M20,66 Q130,-6 240,66" /></svg>
+        <div class="plane">✈️</div>
+        <div class="pin pin-a"><span class="pin-dot"></span><span class="pin-label">You, Cairo</span></div>
+        <div class="pin pin-b"><span class="pin-dot"></span><span class="pin-label">Her, Nigeria</span></div>
+      </div>
+      <p>Thousands of miles, on paper.</p>
+      <p class="hint">Zero, in every way that's actually mattered so far.</p>
+    </div>
+
+    <div class="piece reveal" id="clockPiece">
+      <div class="status-tag status-done">✓ Finished</div>
+      <h2>Right now, for both of us 🕐</h2>
+      <div class="clock-row">
+        <div class="clock-card">
+          <div class="clock-icon" id="clockIconYou">☀️</div>
+          <div class="clock-time" id="clockTimeYou">--:--</div>
+          <div class="clock-label">You, Cairo</div>
+        </div>
+        <div class="clock-card">
+          <div class="clock-icon" id="clockIconHer">☀️</div>
+          <div class="clock-time" id="clockTimeHer">--:--</div>
+          <div class="clock-label">Her, Nigeria</div>
+        </div>
+      </div>
+      <p class="hint" id="clockHint"></p>
+    </div>
+
+    <div class="piece reveal prayer-piece" id="prayerPiece">
+      <div class="status-tag status-done">✓ Finished</div>
+      <h2>A dua for us 🤍</h2>
+      <p class="reveal">I pray that this is it for both of us.</p>
+      <p class="reveal">I pray that, InshaAllah, you're my last relationship and that I'm yours.</p>
+      <p class="reveal">I pray that one day, InshaAllah, this relationship leads us to marriage.</p>
+      <p class="reveal">And above everything, I pray Allah keeps guiding us and keeps whatever is good for us in our lives. I pray that if we're meant to be together, He makes the path beautiful for us and brings us closer in the right way and at the right time.</p>
+      <p class="reveal signoff">Ameen.</p>
+    </div>
+
+    <div class="piece reveal" id="couponPiece">
+      <div class="status-tag status-done">✓ Finished</div>
+      <h2>Redeem whenever 🎟️</h2>
+      <p class="hint">Tap one when you want to cash it in. (I won't actually know — just text me 🌚)</p>
+      <div class="coupon-grid" id="couponGrid">
+        <div class="coupon" data-id="movie"><div class="coupon-txt">Good for one movie night — my pick or yours 🎬</div><div class="coupon-stub">CLAIM</div></div>
+        <div class="coupon" data-id="call"><div class="coupon-txt">Good for me calling you first, no matter what 📞</div><div class="coupon-stub">CLAIM</div></div>
+        <div class="coupon" data-id="texts"><div class="coupon-txt">Good for unlimited annoying good-morning texts 🌚</div><div class="coupon-stub">CLAIM</div></div>
+        <div class="coupon" data-id="hug"><div class="coupon-txt">Good for one hug that lasts way too long 🫂</div><div class="coupon-stub">CLAIM</div></div>
+        <div class="coupon" data-id="food"><div class="coupon-txt">Good for your favorite food, delivered by me in person one day 🍜</div><div class="coupon-stub">CLAIM</div></div>
+        <div class="coupon" data-id="dance"><div class="coupon-txt">Good for one slow dance, no excuses 💃</div><div class="coupon-stub">CLAIM</div></div>
+      </div>
+    </div>
+
   </section>
 
   <footer>This page grows as I do. Made with love (and it's genuinely not done yet) — your boyfriend ❤️</footer>
@@ -541,7 +678,7 @@
 
   window.addEventListener('load', function(){
     setTimeout(function(){ document.getElementById('loader').classList.add('hide'); }, 800);
-    setTimeout(function(){ document.getElementById('progressFill').style.width = '60%'; }, 400);
+    setTimeout(function(){ document.getElementById('progressFill').style.width = '72%'; }, 400);
   });
 
   function initParticles(){
@@ -635,6 +772,98 @@
     }, { threshold: 0.3 });
     bio.observe(bouquet);
   }
+
+  // ---------- BUCKET LIST (persisted per-device) ----------
+  (function(){
+    var KEY = 'loml-bucket';
+    var saved = {};
+    try{ saved = JSON.parse(localStorage.getItem(KEY) || '{}'); }catch(e){}
+    var items = document.querySelectorAll('#bucketList li');
+    items.forEach(function(li){
+      var id = li.getAttribute('data-id');
+      if(saved[id]) li.classList.add('checked');
+      li.addEventListener('click', function(){
+        if(navigator.vibrate){ try{ navigator.vibrate(10); }catch(e){} }
+        li.classList.toggle('checked');
+        saved[id] = li.classList.contains('checked');
+        try{ localStorage.setItem(KEY, JSON.stringify(saved)); }catch(e){}
+      });
+    });
+  })();
+
+  // ---------- COUPONS (persisted per-device) ----------
+  (function(){
+    var KEY = 'loml-coupons';
+    var saved = {};
+    try{ saved = JSON.parse(localStorage.getItem(KEY) || '{}'); }catch(e){}
+    var coupons = document.querySelectorAll('#couponGrid .coupon');
+    coupons.forEach(function(c){
+      var id = c.getAttribute('data-id');
+      var stub = c.querySelector('.coupon-stub');
+      function refresh(){
+        if(c.classList.contains('claimed')){ stub.textContent = 'CLAIMED ✓'; }
+        else{ stub.textContent = 'CLAIM'; }
+      }
+      if(saved[id]) c.classList.add('claimed');
+      refresh();
+      c.addEventListener('click', function(){
+        if(navigator.vibrate){ try{ navigator.vibrate(10); }catch(e){} }
+        c.classList.toggle('claimed');
+        saved[id] = c.classList.contains('claimed');
+        try{ localStorage.setItem(KEY, JSON.stringify(saved)); }catch(e){}
+        refresh();
+      });
+    });
+  })();
+
+  // ---------- LIVE CLOCK ----------
+  (function(){
+    var TZ_YOU = 'Africa/Cairo';
+    var TZ_HER = 'Africa/Lagos';
+    var timeYou = document.getElementById('clockTimeYou');
+    var timeHer = document.getElementById('clockTimeHer');
+    var iconYou = document.getElementById('clockIconYou');
+    var iconHer = document.getElementById('clockIconHer');
+    var hint = document.getElementById('clockHint');
+    if(!timeYou) return;
+
+    function hourIn(tz, d){
+      var fmt = new Intl.DateTimeFormat('en-US', { timeZone: tz, hour:'numeric', hour12:false });
+      return parseInt(fmt.format(d), 10) % 24;
+    }
+    function timeStr(tz, d){
+      return new Intl.DateTimeFormat('en-US', { timeZone: tz, hour:'numeric', minute:'2-digit', hour12:true }).format(d);
+    }
+    function utcOffsetMinutes(tz, d){
+      var fmt = new Intl.DateTimeFormat('en-US', {
+        timeZone: tz, hour12:false, year:'numeric', month:'2-digit', day:'2-digit',
+        hour:'2-digit', minute:'2-digit', second:'2-digit'
+      });
+      var parts = {};
+      fmt.formatToParts(d).forEach(function(p){ parts[p.type] = p.value; });
+      var asUTC = Date.UTC(parts.year, parts.month-1, parts.day, parts.hour, parts.minute, parts.second);
+      return (asUTC - d.getTime()) / 60000;
+    }
+
+    function tick(){
+      var now = new Date();
+      timeYou.textContent = timeStr(TZ_YOU, now);
+      timeHer.textContent = timeStr(TZ_HER, now);
+      var hY = hourIn(TZ_YOU, now), hH = hourIn(TZ_HER, now);
+      iconYou.textContent = (hY >= 6 && hY < 18) ? '☀️' : '🌙';
+      iconHer.textContent = (hH >= 6 && hH < 18) ? '☀️' : '🌙';
+      if(hint){
+        var diff = Math.round((utcOffsetMinutes(TZ_YOU, now) - utcOffsetMinutes(TZ_HER, now)) / 60);
+        if(diff === 0){
+          hint.textContent = 'Same time, right now, for once.';
+        } else {
+          hint.textContent = 'You\'re ' + Math.abs(diff) + ' hour' + (Math.abs(diff)===1?'':'s') + (diff>0?' ahead':' behind') + ' of her — barely a difference at all.';
+        }
+      }
+    }
+    tick();
+    setInterval(tick, 15000);
+  })();
 
 })();
 </script>
