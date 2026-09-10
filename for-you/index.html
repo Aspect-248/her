@@ -38,14 +38,6 @@
   }
   p{ line-height:1.65; font-size:1.05rem; margin:0 0 1em; }
   section{ position:relative; padding: 5rem 1.3rem; max-width:620px; margin:0 auto; }
-  .eyebrow{
-    text-transform:uppercase;
-    letter-spacing:0.14em;
-    font-size:0.72rem;
-    font-weight:600;
-    color: var(--wine-bright);
-    opacity:0.75;
-  }
   ::selection{ background: var(--pink); color: var(--wine-deep); }
 
   #loader{
@@ -73,12 +65,6 @@
     text-align:center; padding: 2rem 1.3rem; position:relative; z-index:2;
   }
   #landing h1{ font-size: clamp(1.9rem, 8vw, 2.6rem); color: var(--wine-deep); max-width: 480px; }
-  #landing .sub{ color: var(--wine-bright); max-width:420px; font-size:1.02rem; margin-top:0.4rem; }
-
-  .progress-wrap{ margin-top:2rem; width:100%; max-width:280px; }
-  .progress-label{ font-size:0.8rem; color:var(--wine-bright); margin-bottom:0.5rem; letter-spacing:0.02em; }
-  .progress-track{ width:100%; height:8px; border-radius:999px; background: rgba(92,26,52,0.12); overflow:hidden; }
-  .progress-fill{ height:100%; border-radius:999px; background: linear-gradient(90deg, var(--pink), var(--wine-bright)); width:0%; transition: width 1.4s cubic-bezier(.4,.1,.2,1) 0.3s; }
 
   .enter-btn{
     margin-top:2rem; border:none; cursor:pointer; font-size:1.02rem; font-weight:600; font-family:inherit;
@@ -346,14 +332,7 @@
 <div id="particles"></div>
 
 <section id="landing">
-  <div class="eyebrow">Still under construction</div>
   <h1>A little world, for you. 🌷</h1>
-  <p class="sub">You said you wanted to see how far I've gotten. So — here it is. Not finished. Just yours to watch grow.</p>
-
-  <div class="progress-wrap">
-    <div class="progress-label" id="progressLabel">8 pieces built so far — still going</div>
-    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-  </div>
 
   <button class="enter-btn" id="enterBtn">Take a peek 🌚</button>
   <div class="scroll-hint">↓</div>
@@ -420,7 +399,6 @@
         <div class="ribbon"></div>
       </div>
       <p>White roses. Because that's what you love, and now I know it too.</p>
-      <p class="hint">The rest of the garden can keep growing — this corner's done.</p>
     </div>
 
     <div class="piece letter-piece">
@@ -628,7 +606,6 @@
           <div class="clock-label">Her, Nigeria</div>
         </div>
       </div>
-      <p class="hint" id="clockHint"></p>
     </div>
 
     <div class="piece reveal prayer-piece" id="prayerPiece">
@@ -657,7 +634,7 @@
 
   </section>
 
-  <footer>This page grows as I do. Made with love (and it's genuinely not done yet) — your boyfriend ❤️</footer>
+  <footer>This page grows as I do. Made with love — your boyfriend ❤️</footer>
 </div>
 
 <script>
@@ -666,7 +643,6 @@
 
   window.addEventListener('load', function(){
     setTimeout(function(){ document.getElementById('loader').classList.add('hide'); }, 800);
-    setTimeout(function(){ document.getElementById('progressFill').style.width = '72%'; }, 400);
   });
 
   function initParticles(){
@@ -809,7 +785,6 @@
     var timeHer = document.getElementById('clockTimeHer');
     var iconYou = document.getElementById('clockIconYou');
     var iconHer = document.getElementById('clockIconHer');
-    var hint = document.getElementById('clockHint');
     if(!timeYou) return;
 
     function hourIn(tz, d){
@@ -819,16 +794,6 @@
     function timeStr(tz, d){
       return new Intl.DateTimeFormat('en-US', { timeZone: tz, hour:'numeric', minute:'2-digit', hour12:true }).format(d);
     }
-    function utcOffsetMinutes(tz, d){
-      var fmt = new Intl.DateTimeFormat('en-US', {
-        timeZone: tz, hour12:false, year:'numeric', month:'2-digit', day:'2-digit',
-        hour:'2-digit', minute:'2-digit', second:'2-digit'
-      });
-      var parts = {};
-      fmt.formatToParts(d).forEach(function(p){ parts[p.type] = p.value; });
-      var asUTC = Date.UTC(parts.year, parts.month-1, parts.day, parts.hour, parts.minute, parts.second);
-      return (asUTC - d.getTime()) / 60000;
-    }
 
     function tick(){
       var now = new Date();
@@ -837,14 +802,6 @@
       var hY = hourIn(TZ_YOU, now), hH = hourIn(TZ_HER, now);
       iconYou.textContent = (hY >= 6 && hY < 18) ? '☀️' : '🌙';
       iconHer.textContent = (hH >= 6 && hH < 18) ? '☀️' : '🌙';
-      if(hint){
-        var diff = Math.round((utcOffsetMinutes(TZ_YOU, now) - utcOffsetMinutes(TZ_HER, now)) / 60);
-        if(diff === 0){
-          hint.textContent = 'Same time, right now, for once.';
-        } else {
-          hint.textContent = 'You\'re ' + Math.abs(diff) + ' hour' + (Math.abs(diff)===1?'':'s') + (diff>0?' ahead':' behind') + ' of her — barely a difference at all.';
-        }
-      }
     }
     tick();
     setInterval(tick, 15000);
