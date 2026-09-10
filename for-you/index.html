@@ -430,6 +430,45 @@
     padding:0.7rem 1.6rem; border-radius:999px; font-weight:600; cursor:pointer; font-family:inherit;
   }
 
+  /* handwritten notes */
+  .notes-stack{ display:grid; margin-top:1.3rem; }
+  .hand-note{
+    grid-area: 1 / 1; align-self:center; width:100%; height:auto; display:block;
+    border-radius:6px; background:#f4efe6; cursor:zoom-in;
+    box-shadow: 0 8px 22px rgba(60,20,40,0.18);
+    transform-origin: 50% 60%;
+    transition: transform 0.5s cubic-bezier(.34,1.3,.5,1), opacity 0.45s ease;
+  }
+  .hand-note.leaving{ transform: translateX(115%) rotate(12deg) !important; opacity:0 !important; }
+  .notes-controls{ display:flex; align-items:center; justify-content:space-between; margin-top:1.7rem; }
+  .notes-count{ font-size:0.8rem; color: var(--wine-bright); letter-spacing:0.08em; }
+  .notes-next{
+    border:none; cursor:pointer; font-family:inherit; font-size:0.9rem; font-weight:600;
+    color: var(--cream-2); background: var(--wine-bright);
+    padding:0.6rem 1.2rem; border-radius:999px; transition: transform 0.15s ease;
+  }
+  .notes-next:active{ transform: scale(0.95); }
+  .note-viewer{
+    position:fixed; inset:0; z-index:220; overflow:hidden;
+    background: rgba(20,8,14,0.93);
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; pointer-events:none; transition: opacity 0.3s ease;
+  }
+  .note-viewer.show{ opacity:1; pointer-events:auto; }
+  .note-big{ flex-shrink:0; max-width:94vw; max-height:80vh; border-radius:6px; box-shadow: 0 20px 50px rgba(0,0,0,0.45); }
+  .note-turn{ position:absolute; top:1.1rem; left:0; right:0; text-align:center; color: var(--pink-soft); font-size:0.85rem; }
+  .note-close{
+    position:absolute; bottom:1.2rem; left:50%; transform:translateX(-50%);
+    border:none; background: var(--wine-bright); color:#fff; padding:0.7rem 1.6rem;
+    border-radius:999px; font-weight:600; cursor:pointer; font-family:inherit;
+  }
+  @media (orientation: portrait){
+    .note-big{ max-width:none; max-height:none; width:82vh; transform: rotate(90deg); }
+  }
+  @media (orientation: landscape){
+    .note-turn{ display:none; }
+  }
+
   /* night sky */
   .sky-piece{ position:relative; overflow:hidden; background: linear-gradient(170deg, #1d1030, #3a1d52 60%, #4a2065); border-color: rgba(255,255,255,0.1); }
   .sky-canvas{ position:absolute; inset:0; width:100%; height:100%; }
@@ -661,6 +700,21 @@
       </div>
     </div>
 
+    <div class="piece reveal notes-piece" id="notesPiece">
+      <h2>From my hand ✍️</h2>
+      <div class="notes-stack" id="notesStack">
+        <img class="hand-note" src="notes/note-1.jpg" width="896" height="294" alt="Handwritten note: Fri, 11 Sep, 1:24 am. My pretty lady, everything on this page was typed. This part wasn't. I wanted you to have something straight from my hand. I love you." loading="lazy">
+        <img class="hand-note" src="notes/note-2.jpg" width="895" height="260" alt="Handwritten note: To my pretty lady, I can't hold your hand yet, so this is the next best thing. The day I finally see you, I'm bringing white roses. I love you." loading="lazy">
+        <img class="hand-note" src="notes/note-3.jpg" width="923" height="312" alt="Handwritten note: My love, one day I will hand you a note like this in person, not through screen. Until then, keep this one. I love you, always." loading="lazy">
+        <img class="hand-note" src="notes/note-4.jpg" width="961" height="119" alt="Handwritten note: I love you, my love. Thank you for choosing me." loading="lazy">
+      </div>
+      <div class="notes-controls">
+        <span class="notes-count" id="notesCount">1 / 4</span>
+        <button class="notes-next" id="notesNext">next note ›</button>
+      </div>
+      <p class="hint">Tap the note to read it up close.</p>
+    </div>
+
     <div class="piece letter-piece">
       <div class="status-tag status-done">♡ From the heart</div>
       <h2>For My Lady ❤️</h2>
@@ -832,6 +886,12 @@
   </section>
 
   <footer>This page grows as I do. Made with love, your boyfriend ❤️</footer>
+</div>
+
+<div class="note-viewer" id="noteViewer">
+  <div class="note-turn">turn your phone sideways ↻</div>
+  <img class="note-big" id="noteBig" alt="">
+  <button class="note-close" id="noteClose">close</button>
 </div>
 
 <div class="ow-overlay" id="owOverlay">
@@ -1136,6 +1196,59 @@
     var dayOfYear = Math.floor((now - start) / 86400000);
     lineEl.textContent = notes[dayOfYear % notes.length];
     dateEl.textContent = new Intl.DateTimeFormat('en-GB', { weekday:'long', day:'numeric', month:'long' }).format(now);
+  })();
+
+  // handwritten notes: a stack to tap through; tapping the top note opens it large
+  (function(){
+    var stack = document.getElementById('notesStack');
+    if(!stack) return;
+    var notes = Array.prototype.slice.call(stack.querySelectorAll('.hand-note'));
+    var order = notes.slice();
+    var tilts = [-1.4, 2.1, -2.6, 1.7];
+    var countEl = document.getElementById('notesCount');
+    var nextBtn = document.getElementById('notesNext');
+    var viewer = document.getElementById('noteViewer');
+    var big = document.getElementById('noteBig');
+    var closeBtn = document.getElementById('noteClose');
+    var busy = false;
+
+    function layout(){
+      order.forEach(function(n, p){
+        var tilt = tilts[notes.indexOf(n)] * (p === 0 ? 0.35 : 1);
+        n.style.zIndex = String(10 - p);
+        n.style.transform = 'translateY(' + (p * 7) + 'px) rotate(' + tilt + 'deg) scale(' + (1 - p * 0.035) + ')';
+        n.style.opacity = p > 2 ? '0' : '1';
+      });
+      countEl.textContent = (notes.indexOf(order[0]) + 1) + ' / ' + notes.length;
+    }
+    layout();
+
+    nextBtn.addEventListener('click', function(){
+      if(busy) return;
+      busy = true;
+      if(navigator.vibrate){ try{ navigator.vibrate(8); }catch(e){} }
+      var top = order[0];
+      top.classList.add('leaving');
+      setTimeout(function(){
+        order.push(order.shift());
+        top.classList.remove('leaving');
+        layout();
+        busy = false;
+      }, 400);
+    });
+
+    notes.forEach(function(n){
+      n.addEventListener('click', function(){
+        if(n !== order[0]) return;
+        big.src = n.currentSrc || n.src;
+        big.alt = n.alt;
+        viewer.classList.add('show');
+      });
+    });
+    function close(){ viewer.classList.remove('show'); }
+    closeBtn.addEventListener('click', close);
+    viewer.addEventListener('click', function(e){ if(e.target === viewer) close(); });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') close(); });
   })();
 
   // open when notes
