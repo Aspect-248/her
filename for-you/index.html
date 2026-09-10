@@ -317,6 +317,56 @@
   .coupon.claimed .coupon-txt{ text-decoration: line-through; text-decoration-color: rgba(92,26,52,0.35); }
   .coupon.claimed .coupon-stub{ background: linear-gradient(135deg, #9c9c9c, #6b6b6b); }
 
+  /* days-since counter */
+  .counter-row{ display:flex; gap:0.6rem; margin-top:1.6rem; }
+  .counter-unit{ flex:1; text-align:center; background: var(--cream-2); border-radius:14px; padding:1rem 0.3rem; box-shadow: 0 4px 14px rgba(92,26,52,0.08); }
+  .counter-num{ font-family: Georgia, serif; font-size:1.5rem; font-weight:700; color: var(--wine-deep); font-variant-numeric: tabular-nums; }
+  .counter-label{ font-size:0.68rem; color: var(--wine-bright); text-transform:uppercase; letter-spacing:0.05em; margin-top:0.2rem; }
+
+  /* scratch card */
+  .scratch-wrap{ position:relative; height:150px; border-radius:16px; overflow:hidden; margin-top:1.2rem; box-shadow: var(--shadow); }
+  .scratch-reveal{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    text-align:center; padding:1.4rem; font-size:1rem; line-height:1.6;
+    color: var(--wine-deep); background: var(--cream-2); font-weight:600;
+  }
+  .scratch-canvas{ position:absolute; inset:0; width:100%; height:100%; cursor:pointer; touch-action:none; }
+
+  /* brag card */
+  .brag-card{ background: linear-gradient(155deg, var(--wine-deep), var(--wine-bright)); color: var(--cream-2); text-align:center; }
+  .brag-inner{ padding: 1rem 0 0.5rem; }
+  .brag-emoji{ font-size:2rem; margin-bottom:0.6rem; }
+  .brag-line{ font-family: Georgia, serif; font-weight:700; font-size:1.4rem; margin-bottom:0.8rem; }
+  .brag-stats{ font-size:1.05rem; font-weight:700; color: var(--pink-soft); margin-bottom:0.5rem; }
+  .brag-sub{ font-size:0.85rem; opacity:0.85; }
+  .brag-card .hint{ color: var(--pink-soft); opacity:0.85; margin-top:1.2rem; }
+
+  /* easter egg */
+  .footer-heart{ cursor:pointer; display:inline-block; transition: transform 0.15s ease; }
+  .egg-overlay{
+    position:fixed; inset:0; z-index:200; background: rgba(61,15,34,0.85);
+    display:flex; align-items:center; justify-content:center; padding:1.5rem;
+    opacity:0; pointer-events:none; transition: opacity 0.4s ease;
+  }
+  .egg-overlay.show{ opacity:1; pointer-events:auto; }
+  .egg-panel{
+    background: var(--cream-2); border-radius:20px; padding:2rem 1.6rem; max-width:380px;
+    text-align:center; box-shadow:0 20px 50px rgba(0,0,0,0.3);
+    transform: scale(0.85); transition: transform 0.4s cubic-bezier(.34,1.56,.64,1);
+  }
+  .egg-overlay.show .egg-panel{ transform: scale(1); }
+  .egg-heart{ font-size:2.4rem; margin-bottom:0.8rem; animation: pulseHeart 1.1s ease-in-out infinite; }
+  .egg-panel p{ font-size:1rem; line-height:1.6; margin-bottom:0.9rem; color: var(--ink); }
+  .egg-small{ font-size:0.85rem; color: var(--wine-bright); font-style:italic; }
+  .egg-close{
+    margin-top:0.6rem; border:none; background: var(--wine-bright); color:#fff;
+    padding:0.7rem 1.6rem; border-radius:999px; font-weight:600; cursor:pointer; font-family:inherit;
+  }
+  @keyframes burstUp{
+    0%{ transform: translate(0,0); opacity:1; }
+    100%{ transform: translate(var(--bx,0), -70vh); opacity:0; }
+  }
+
   footer{ text-align:center; padding: 3rem 1.3rem 3.5rem; font-size:0.85rem; color: var(--wine-bright); opacity:0.7; }
 
   @media (min-width:700px){ section{ padding: 6.5rem 1.3rem; } }
@@ -610,6 +660,17 @@
       </div>
     </div>
 
+    <div class="piece reveal" id="counterPiece">
+      <div class="status-tag status-done">✓ Finished</div>
+      <h2>Since day one 🕯️</h2>
+      <div class="counter-row">
+        <div class="counter-unit"><div class="counter-num" id="cDays">0</div><div class="counter-label">days</div></div>
+        <div class="counter-unit"><div class="counter-num" id="cHours">0</div><div class="counter-label">hrs</div></div>
+        <div class="counter-unit"><div class="counter-num" id="cMins">0</div><div class="counter-label">min</div></div>
+        <div class="counter-unit"><div class="counter-num" id="cSecs">0</div><div class="counter-label">sec</div></div>
+      </div>
+    </div>
+
     <div class="piece reveal prayer-piece" id="prayerPiece">
       <div class="status-tag status-done">✓ Finished</div>
       <h2>A dua for us 🤍</h2>
@@ -618,6 +679,16 @@
       <p class="reveal">I pray that one day, InshaAllah, this relationship leads us to marriage.</p>
       <p class="reveal">And above everything, I pray Allah keeps guiding us and keeps whatever is good for us in our lives. I pray that if we're meant to be together, He makes the path beautiful for us and brings us closer in the right way and at the right time.</p>
       <p class="reveal signoff">Ameen.</p>
+    </div>
+
+    <div class="piece reveal" id="scratchPiece">
+      <div class="status-tag status-done">✓ Finished</div>
+      <h2>Scratch this 🪙</h2>
+      <p class="hint">Use your finger. There's something under here.</p>
+      <div class="scratch-wrap" id="scratchWrap">
+        <div class="scratch-reveal">Surprise. 🤍<br>No matter how many pieces I add to this page, the real one is simple. I love you, and I'm not going anywhere.</div>
+        <canvas class="scratch-canvas" id="scratchCanvas"></canvas>
+      </div>
     </div>
 
     <div class="piece reveal" id="couponPiece">
@@ -634,9 +705,29 @@
       </div>
     </div>
 
+    <div class="piece brag-card reveal" id="bragPiece">
+      <div class="brag-inner">
+        <div class="brag-emoji">😭❤️</div>
+        <div class="brag-line">He made me a whole website</div>
+        <div class="brag-stats" id="bragStats">-- weeks in</div>
+        <div class="brag-sub">1 coded apology &middot; infinite white roses &middot; still not done</div>
+      </div>
+      <p class="hint">Made for screenshotting. Go ahead.</p>
+    </div>
+
   </section>
 
-  <footer>This page grows as I do. Made with love, your boyfriend ❤️</footer>
+  <footer>This page grows as I do. Made with love, your boyfriend <span id="footerHeart" class="footer-heart">❤️</span></footer>
+</div>
+
+<div class="egg-overlay" id="eggOverlay">
+  <div class="egg-panel">
+    <div class="egg-heart">💗</div>
+    <p>You found it. 🌚</p>
+    <p>Since you're clearly persistent, I love you more than any of these tapped hearts could ever show.</p>
+    <p class="egg-small">(now go tell your friends I built you a website with a secret easter egg in it 😭❤️)</p>
+    <button class="egg-close" id="eggClose">close</button>
+  </div>
 </div>
 
 <script>
@@ -807,6 +898,143 @@
     }
     tick();
     setInterval(tick, 15000);
+  })();
+
+  // days-since counter + brag card stat
+  (function(){
+    var START = new Date('2026-08-05T14:00:00+03:00').getTime();
+    var dEl = document.getElementById('cDays'), hEl = document.getElementById('cHours'),
+        mEl = document.getElementById('cMins'), sEl = document.getElementById('cSecs');
+    var bragStats = document.getElementById('bragStats');
+    if(!dEl) return;
+    function tick(){
+      var diff = Date.now() - START;
+      if(diff < 0) diff = 0;
+      var totalSec = Math.floor(diff/1000);
+      var days = Math.floor(totalSec/86400);
+      var hours = Math.floor((totalSec%86400)/3600);
+      var mins = Math.floor((totalSec%3600)/60);
+      var secs = totalSec%60;
+      dEl.textContent = days;
+      hEl.textContent = hours;
+      mEl.textContent = mins;
+      sEl.textContent = secs;
+      if(bragStats){
+        var weeks = Math.floor(days/7);
+        bragStats.textContent = weeks + (weeks === 1 ? ' week in' : ' weeks in');
+      }
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
+
+  // scratch-to-reveal card
+  (function(){
+    var wrap = document.getElementById('scratchWrap');
+    var canvas = document.getElementById('scratchCanvas');
+    if(!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var revealed = false;
+
+    function sizeCanvas(){
+      var rect = wrap.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+      var grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      grad.addColorStop(0, '#caa6b1');
+      grad.addColorStop(1, '#8a2c4f');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'rgba(255,255,255,0.9)';
+      ctx.font = '600 15px -apple-system, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('scratch here 🪙', canvas.width/2, canvas.height/2);
+    }
+    sizeCanvas();
+    window.addEventListener('resize', sizeCanvas);
+
+    function getPos(e){
+      var rect = canvas.getBoundingClientRect();
+      var x, y;
+      if(e.touches && e.touches[0]){ x = e.touches[0].clientX; y = e.touches[0].clientY; }
+      else { x = e.clientX; y = e.clientY; }
+      return { x: x - rect.left, y: y - rect.top };
+    }
+
+    function scratchAt(x, y){
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.beginPath();
+      ctx.arc(x, y, 22, 0, Math.PI*2);
+      ctx.fill();
+    }
+
+    function checkCleared(){
+      if(revealed) return;
+      var data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      var cleared = 0, sampled = 0;
+      for(var i = 3; i < data.length; i += 4*20){ sampled++; if(data[i] < 40) cleared++; }
+      if(sampled > 0 && (cleared/sampled) > 0.5){
+        revealed = true;
+        canvas.style.transition = 'opacity 0.6s ease';
+        canvas.style.opacity = '0';
+        setTimeout(function(){ canvas.style.pointerEvents = 'none'; }, 650);
+      }
+    }
+
+    var drawing = false;
+    function start(e){ drawing = true; var p = getPos(e); scratchAt(p.x, p.y); }
+    function move(e){ if(!drawing) return; var p = getPos(e); scratchAt(p.x, p.y); checkCleared(); if(e.cancelable) e.preventDefault(); }
+    function end(){ drawing = false; checkCleared(); }
+
+    canvas.addEventListener('mousedown', start);
+    canvas.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', end);
+    canvas.addEventListener('touchstart', start, { passive:true });
+    canvas.addEventListener('touchmove', move, { passive:false });
+    canvas.addEventListener('touchend', end);
+  })();
+
+  // hidden easter egg on the footer heart
+  (function(){
+    var heart = document.getElementById('footerHeart');
+    var overlay = document.getElementById('eggOverlay');
+    var closeBtn = document.getElementById('eggClose');
+    if(!heart || !overlay) return;
+    var taps = 0;
+
+    function burstHearts(){
+      var wrap = document.getElementById('particles');
+      var glyphs = ['❤️','💕','💗'];
+      for(var i = 0; i < 24; i++){
+        var el = document.createElement('div');
+        el.className = 'particle';
+        el.textContent = glyphs[Math.floor(Math.random()*glyphs.length)];
+        var size = 14 + Math.random()*18;
+        var left = 20 + Math.random()*60;
+        el.style.left = left + 'vw';
+        el.style.top = 'auto';
+        el.style.bottom = '0px';
+        el.style.fontSize = size + 'px';
+        el.style.setProperty('--bx', (Math.random()*160-80) + 'px');
+        el.style.animation = 'burstUp ' + (1.6 + Math.random()) + 's ease-out forwards';
+        wrap.appendChild(el);
+        (function(node){ setTimeout(function(){ node.remove(); }, 3000); })(el);
+      }
+    }
+
+    heart.addEventListener('click', function(){
+      taps++;
+      if(navigator.vibrate){ try{ navigator.vibrate(8); }catch(e){} }
+      heart.style.transform = 'scale(' + (1 + Math.min(taps, 10)*0.03) + ')';
+      if(taps >= 10){
+        burstHearts();
+        overlay.classList.add('show');
+        taps = 0;
+        heart.style.transform = '';
+      }
+    });
+    closeBtn.addEventListener('click', function(){ overlay.classList.remove('show'); });
+    overlay.addEventListener('click', function(e){ if(e.target === overlay) overlay.classList.remove('show'); });
   })();
 
 })();
