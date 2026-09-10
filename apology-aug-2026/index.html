@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -48,7 +48,6 @@
   }
   ::selection{ background: var(--pink); color: var(--wine-deep); }
 
-  /* ---------- LOADER ---------- */
   #loader{
     position:fixed; inset:0; z-index:999;
     background: linear-gradient(160deg, var(--wine-deep), var(--wine));
@@ -73,7 +72,6 @@
     opacity:0.85;
   }
 
-  /* ---------- PARTICLES ---------- */
   #particles{
     position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:1;
   }
@@ -93,7 +91,6 @@
     100%{ transform: translate(var(--drift,20px), -115vh) rotate(360deg); opacity:0; }
   }
 
-  /* ---------- LANDING ---------- */
   #landing{
     min-height:100svh;
     display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -147,7 +144,6 @@
   }
   @keyframes bob{ 0%,100%{transform:translate(-50%,0);} 50%{transform:translate(-50%,8px);} }
 
-  /* ---------- LOCKED CONTENT ---------- */
   #main-content{
     position:relative; z-index:2;
     opacity:0;
@@ -166,7 +162,6 @@
   }
   .reveal.in-view{ opacity:1; transform:none; }
 
-  /* ---------- ENVELOPE ---------- */
   .envelope-zone{ text-align:center; margin-bottom:2.5rem; }
   .envelope-scene{
     width:250px; height:165px; margin:0 auto; position:relative;
@@ -212,7 +207,6 @@
   }
   .letter-content.show{ opacity:1; transform:none; pointer-events:auto; margin-top:0; }
 
-  /* ---------- CASE FILE CARD ---------- */
   .case-card{
     margin-top:2rem;
     background: rgba(255,255,255,0.55);
@@ -251,7 +245,6 @@
     opacity:0.75;
   }
 
-  /* ---------- LESSON CARDS ---------- */
   .cards-grid{ display:flex; flex-direction:column; gap:1rem; margin-top:1.8rem; }
   .lesson-card{
     background: var(--cream-2);
@@ -271,7 +264,6 @@
   .lesson-card h3{ font-size:1.08rem; color:var(--wine-deep); }
   .lesson-card p{ font-size:0.95rem; margin:0; color: var(--ink); opacity:0.85; }
 
-  /* ---------- HEARTFELT ---------- */
   #heartfelt{
     background: linear-gradient(180deg, transparent, rgba(242,166,183,0.18), transparent);
   }
@@ -292,7 +284,6 @@
   @keyframes typing{ to{ width: 20ch; } }
   @keyframes blink{ 50%{ border-color:transparent; } }
 
-  /* ---------- PROMISES ---------- */
   .checklist{ list-style:none; padding:0; margin:1.8rem 0 0; display:flex; flex-direction:column; gap:0.9rem; }
   .checklist li{
     display:flex; align-items:flex-start; gap:0.8rem;
@@ -313,7 +304,6 @@
   .checklist li.in-view .check-mark{ transform: scale(1); }
   .checklist li span.txt{ font-size:0.98rem; padding-top:0.1rem; }
 
-  /* ---------- FORGIVENESS ---------- */
   #forgiveness{ text-align:center; }
   #forgiveness h2{ color:var(--wine-deep); }
   .btn-row{ display:flex; flex-direction:column; gap:0.9rem; margin-top:1.8rem; align-items:center; }
@@ -369,7 +359,6 @@
   .continue-btn.show{ opacity:1; transform:none; }
   .continue-btn:active{ transform:scale(0.94); }
 
-  /* ---------- FINAL ---------- */
   #final{ text-align:center; display:none; }
   #final.show{ display:block; }
   #final h2{ color:var(--wine-deep); font-size:1.9rem; }
@@ -379,7 +368,6 @@
     color: var(--wine-bright); opacity:0.7;
   }
 
-  /* confetti canvas */
   #confetti-canvas{ position:fixed; inset:0; pointer-events:none; z-index:50; }
 
   @media (min-width:700px){
@@ -529,14 +517,12 @@
 (function(){
   "use strict";
 
-  // ---------- LOADER ----------
   window.addEventListener('load', function(){
     setTimeout(function(){
       document.getElementById('loader').classList.add('hide');
     }, 900);
   });
 
-  // ---------- PARTICLES ----------
   function initParticles(){
     var wrap = document.getElementById('particles');
     var glyphs = ['❤️','💕','✨','💗'];
@@ -560,7 +546,6 @@
   }
   initParticles();
 
-  // ---------- ENTER / UNLOCK ----------
   var mainContent = document.getElementById('main-content');
   var enterBtn = document.getElementById('enterBtn');
   enterBtn.addEventListener('click', function(){
@@ -575,7 +560,6 @@
     if(navigator.vibrate){ try{ navigator.vibrate(12); }catch(e){} }
   }
 
-  // ---------- ENVELOPE ----------
   var envelopeScene = document.getElementById('envelopeScene');
   var envelopeHint = document.getElementById('envelopeHint');
   var letterContent = document.getElementById('letterContent');
@@ -589,7 +573,6 @@
     }, 500);
   });
 
-  // ---------- SCROLL REVEAL ----------
   var revealTargets = document.querySelectorAll('.reveal, .checklist li');
   var io = new IntersectionObserver(function(entries){
     entries.forEach(function(entry){
@@ -601,7 +584,6 @@
   }, { threshold: 0.18 });
   revealTargets.forEach(function(t){ io.observe(t); });
 
-  // ---------- FORGIVENESS LOGIC ----------
   var btnYes = document.getElementById('btnYes');
   var btnNo = document.getElementById('btnNo');
   var madMsg = document.getElementById('madMsg');
@@ -662,7 +644,6 @@
     }, 80);
   });
 
-  // ---------- CONFETTI / HEARTS BURST ----------
   var canvas = document.getElementById('confetti-canvas');
   var ctx = canvas.getContext('2d');
   var particles = [];
