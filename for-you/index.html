@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -66,6 +66,14 @@
   }
   #landing h1{ font-size: clamp(1.9rem, 8vw, 2.6rem); color: var(--wine-deep); max-width: 480px; }
   #landing .sub{ color: var(--wine-bright); max-width:400px; font-size:1.05rem; margin-top:0.6rem; font-style:italic; }
+  .anniv-banner{
+    display:inline-block; margin-bottom:1.2rem; padding:0.55rem 1.2rem; border-radius:999px;
+    background: linear-gradient(135deg, var(--wine-bright), var(--wine-deep)); color: var(--cream-2);
+    font-size:0.9rem; font-weight:600; box-shadow: var(--shadow);
+    animation: annivIn 0.9s cubic-bezier(.34,1.56,.64,1) 1.4s both;
+  }
+  .anniv-banner[hidden]{ display:none; }
+  @keyframes annivIn{ from{ opacity:0; transform: translateY(-10px) scale(0.9); } to{ opacity:1; transform:none; } }
 
   .enter-btn{
     margin-top:2rem; border:none; cursor:pointer; font-size:1.02rem; font-weight:600; font-family:inherit;
@@ -92,7 +100,6 @@
     position:relative; overflow:hidden;
   }
   .piece + .piece{ margin-top:2rem; }
-  .piece.locked{ background: rgba(255,255,255,0.35); border: 1.5px dashed rgba(92,26,52,0.25); box-shadow:none; }
 
   .status-tag{
     display:inline-flex; align-items:center; gap:0.4rem;
@@ -100,8 +107,6 @@
     padding:0.3rem 0.7rem; border-radius:999px; margin-bottom:1rem;
   }
   .status-done{ background: rgba(92,26,52,0.12); color: var(--wine-deep); }
-  .status-progress{ background: rgba(216,166,87,0.18); color:#8a6414; }
-  .status-locked{ background: rgba(92,26,52,0.06); color: var(--wine-bright); opacity:0.85; }
 
   .piece h2{ font-size:1.35rem; color: var(--wine-deep); }
   .piece p{ font-size:0.98rem; margin-bottom:0.4rem; }
@@ -117,13 +122,6 @@
     margin-top:0.6rem; font-family: Georgia, "Iowan Old Style", serif;
     font-style:italic; font-size:1.15rem; color: var(--wine-deep); font-weight:700;
   }
-
-  .timeline-entry{ display:flex; gap:0.9rem; margin-top:1rem; }
-  .timeline-dot{ flex-shrink:0; width:10px; height:10px; border-radius:50%; background: var(--wine-bright); margin-top:0.4rem; }
-  .timeline-entry.faded .timeline-dot{ background: rgba(92,26,52,0.25); }
-  .timeline-entry.faded p{ opacity:0.6; }
-
-  .lock-icon{ font-size:1.6rem; margin-bottom:0.6rem; display:block; }
 
   .bouquet{
     position:relative; display:flex; align-items:flex-end; justify-content:center; gap:0.4rem;
@@ -465,6 +463,7 @@
 <div id="particles"></div>
 
 <section id="landing">
+  <div class="anniv-banner" id="annivBanner" hidden></div>
   <h1>A little world, for you. 🌷</h1>
   <p class="sub">Everything past this button, I made thinking of you, my love.</p>
 
@@ -477,7 +476,6 @@
   <section id="pieces">
 
     <div class="piece reveal">
-      <div class="status-tag status-done">✓ Finished</div>
       <h2>A little note, first.</h2>
       <p>This is just how I show love, honestly. I'm not really a grand-gesture kind of person by default, but I like building things, and somewhere along the way that became my way of saying I care.</p>
       <p>So instead of just telling you how I feel, I made you a whole little world instead. Every piece on this page is real, made specifically for you, because you're specifically who I was thinking about while I made it.</p>
@@ -490,7 +488,6 @@
     </div>
 
     <div class="piece reveal" id="gardenPiece">
-      <div class="status-tag status-done">✓ Finished</div>
       <h2>The garden 🤍</h2>
 
       <div class="butterfly bf1">
@@ -539,6 +536,124 @@
         <div class="ribbon"></div>
       </div>
       <p>White roses. Because that's what you love, and now I know it too.</p>
+    </div>
+
+    <div class="piece reveal" id="couponPiece">
+      <h2>Redeem whenever 🎟️</h2>
+      <p class="hint">Tap one when you want to cash it in. (I won't actually know, just text me 🌚)</p>
+      <div class="coupon-grid" id="couponGrid">
+        <div class="coupon" data-id="movie"><div class="coupon-txt">Good for one movie night, my pick or yours 🎬</div><div class="coupon-stub">CLAIM</div></div>
+        <div class="coupon" data-id="call"><div class="coupon-txt">Good for me calling you first, no matter what 📞</div><div class="coupon-stub">CLAIM</div></div>
+        <div class="coupon" data-id="texts"><div class="coupon-txt">Good for unlimited annoying good-morning texts 🌚</div><div class="coupon-stub">CLAIM</div></div>
+        <div class="coupon" data-id="hug"><div class="coupon-txt">Good for one hug that lasts way too long 🫂</div><div class="coupon-stub">CLAIM</div></div>
+        <div class="coupon" data-id="food"><div class="coupon-txt">Good for your favorite food, delivered by me in person one day 🍜</div><div class="coupon-stub">CLAIM</div></div>
+        <div class="coupon" data-id="dance"><div class="coupon-txt">Good for one slow dance, no excuses 💃</div><div class="coupon-stub">CLAIM</div></div>
+      </div>
+    </div>
+
+    <div class="piece reveal" id="scratchPiece">
+      <h2>Scratch this 🪙</h2>
+      <p class="hint">Use your finger. There's something under here.</p>
+      <div class="scratch-wrap" id="scratchWrap">
+        <div class="scratch-reveal">Surprise. 🤍<br>No matter how many pieces I add to this page, the real one is simple. I love you, and I'm not going anywhere.</div>
+        <canvas class="scratch-canvas" id="scratchCanvas"></canvas>
+      </div>
+    </div>
+
+    <div class="piece reveal" id="bucketPiece">
+      <h2>Things we're going to do 📝</h2>
+      <p class="hint">Straight from the letter. Tap the ones you're most excited for. It's saved just for you.</p>
+      <ul class="bucket-list" id="bucketList">
+        <li data-id="drives"><span class="bucket-check"></span><span class="bucket-txt">Random drives, no destination</span></li>
+        <li data-id="food"><span class="bucket-check"></span><span class="bucket-txt">Late-night food runs</span></li>
+        <li data-id="hands"><span class="bucket-check"></span><span class="bucket-txt">Holding hands while we walk</span></li>
+        <li data-id="hug"><span class="bucket-check"></span><span class="bucket-txt">A hug after a terrible day</span></li>
+        <li data-id="flowers"><span class="bucket-check"></span><span class="bucket-txt">Me, nervous, at your door with flowers</span></li>
+        <li data-id="lost"><span class="bucket-check"></span><span class="bucket-txt">Getting lost somewhere, on purpose or not</span></li>
+        <li data-id="travel"><span class="bucket-check"></span><span class="bucket-txt">Seeing a new country together</span></li>
+        <li data-id="dance"><span class="bucket-check"></span><span class="bucket-txt">One slow dance, no excuses</span></li>
+      </ul>
+    </div>
+
+    <div class="piece reveal" id="counterPiece">
+      <h2>Since day one 🕯️</h2>
+      <div class="counter-row">
+        <div class="counter-unit"><div class="counter-num" id="cDays">0</div><div class="counter-label">days</div></div>
+        <div class="counter-unit"><div class="counter-num" id="cHours">0</div><div class="counter-label">hrs</div></div>
+        <div class="counter-unit"><div class="counter-num" id="cMins">0</div><div class="counter-label">min</div></div>
+        <div class="counter-unit"><div class="counter-num" id="cSecs">0</div><div class="counter-label">sec</div></div>
+      </div>
+    </div>
+
+    <div class="piece reveal" id="distancePiece">
+      <h2>The distance 🌍</h2>
+      <div class="distance-scene">
+        <svg class="distance-path" viewBox="0 0 260 90" preserveAspectRatio="none"><path d="M20,66 Q130,-6 240,66" /></svg>
+        <div class="plane">✈️</div>
+        <div class="pin pin-a"><span class="pin-dot"></span><span class="pin-label">Me, Cairo</span></div>
+        <div class="pin pin-b"><span class="pin-dot"></span><span class="pin-label">You, Nigeria</span></div>
+      </div>
+      <p>Thousands of miles, on paper.</p>
+      <p class="hint">Zero, in every way that's actually mattered so far.</p>
+    </div>
+
+    <div class="piece reveal" id="clockPiece">
+      <h2>Right now, for both of us 🕐</h2>
+      <div class="clock-row">
+        <div class="clock-card">
+          <div class="clock-icon" id="clockIconYou">☀️</div>
+          <div class="clock-time" id="clockTimeYou">--:--</div>
+          <div class="clock-label">Me, Cairo</div>
+        </div>
+        <div class="clock-card">
+          <div class="clock-icon" id="clockIconHer">☀️</div>
+          <div class="clock-time" id="clockTimeHer">--:--</div>
+          <div class="clock-label">You, Nigeria</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="piece sky-piece reveal" id="skyPiece">
+      <canvas class="sky-canvas" id="skyCanvas"></canvas>
+      <div class="sky-text">
+        <div class="sky-line">Same sky.</div>
+        <div class="sky-line-2">Different windows.</div>
+        <p class="sky-sub">Whatever you're looking up at tonight, I'm under it too.</p>
+      </div>
+    </div>
+
+    <div class="piece reveal prayer-piece" id="prayerPiece">
+      <h2>A dua for us 🤍</h2>
+      <p class="reveal">I pray that this is it for both of us.</p>
+      <p class="reveal">I pray that, InshaAllah, you're my last relationship and that I'm yours.</p>
+      <p class="reveal">I pray that one day, InshaAllah, this relationship leads us to marriage.</p>
+      <p class="reveal">And above everything, I pray Allah keeps guiding us and keeps whatever is good for us in our lives. I pray that if we're meant to be together, He makes the path beautiful for us and brings us closer in the right way and at the right time.</p>
+      <p class="reveal signoff">Ameen.</p>
+    </div>
+
+    <div class="piece reveal" id="owPiece">
+      <h2>Open when… ✉️</h2>
+      <p class="hint">Tap whichever one matches how you're feeling. They're not going anywhere.</p>
+      <div class="ow-grid" id="owGrid">
+        <button class="ow-card" data-title="open when you miss me" data-note="Then we're even, because I promise I'm missing you worse. Distance is the annoying part of our story, not the ending of it. One day I'll be sitting right next to you and you'll be telling me to stop touching your face. Until then, text me. I don't care what time it is. I'd rather lose sleep than have you sitting there missing me quietly.">
+          <span class="ow-seal">💜</span><span class="ow-label">when you miss me</span>
+        </button>
+        <button class="ow-card" data-title="open when you're sad" data-note="First, you don't have to explain it or justify it or make it make sense. You're allowed to just be sad. Second, I'm here. Not the &lsquo;text me if you need anything&rsquo; kind of here, the &lsquo;talk to me right now, I'm not going anywhere&rsquo; kind. And if you don't feel like talking, that's fine too. I'll just be annoying until you smile by accident. That's my specialty.">
+          <span class="ow-seal">🩶</span><span class="ow-label">when you're sad</span>
+        </button>
+        <button class="ow-card" data-title="open when you can't sleep" data-note="Same, probably 😭. If it's late and your brain won't shut up, call me. Genuinely. I'd rather be tired tomorrow than know you were lying there awake by yourself. And if I don't pick up, it's because my body betrayed me again. You already know I have a criminal record for that one 🌚">
+          <span class="ow-seal">🌙</span><span class="ow-label">when you can't sleep</span>
+        </button>
+        <button class="ow-card" data-title="open when you're mad at me" data-note="Fair. I probably deserve it. But here's what I want you to know before you decide anything: I'd so much rather you tell me exactly what I did than go quiet on me. I can fix things I know about. And if I messed up, I'm going to apologise properly, not the lazy kind. You've seen the lengths I'll go to 🌚. Just don't let it sit and get heavy. Come argue with me, my love.">
+          <span class="ow-seal">🌚</span><span class="ow-label">when you're mad at me</span>
+        </button>
+        <button class="ow-card" data-title="open when you need to hear it" data-note="You're not too much. You're not a burden. You're not hard to love. I don't know which one you needed today, so take all three. I chose you on purpose, and I keep choosing you on the boring days, the stressful days, and the days you don't feel like yourself. That isn't going anywhere.">
+          <span class="ow-seal">🤍</span><span class="ow-label">when you need to hear it</span>
+        </button>
+        <button class="ow-card" data-title="open when you're happy" data-note="Tell me. Right now. I want the whole story, including the details you think are boring. I don't just want to be the person you come to when things are heavy. I want the good stuff too. Your wins are genuinely my favourite thing to hear about.">
+          <span class="ow-seal">✨</span><span class="ow-label">when you're happy</span>
+        </button>
+      </div>
     </div>
 
     <div class="piece letter-piece">
@@ -702,142 +817,7 @@
       <p class="reveal signoff">&ldquo;We actually made it.&rdquo; ❤️</p>
     </div>
 
-    <div class="piece reveal" id="owPiece">
-      <div class="status-tag status-done">✓ Finished</div>
-      <h2>Open when… ✉️</h2>
-      <p class="hint">Tap whichever one matches how you're feeling. They're not going anywhere.</p>
-      <div class="ow-grid" id="owGrid">
-        <button class="ow-card" data-title="open when you miss me" data-note="Then we're even, because I promise I'm missing you worse. Distance is the annoying part of our story, not the ending of it. One day I'll be sitting right next to you and you'll be telling me to stop touching your face. Until then, text me. I don't care what time it is. I'd rather lose sleep than have you sitting there missing me quietly.">
-          <span class="ow-seal">💜</span><span class="ow-label">when you miss me</span>
-        </button>
-        <button class="ow-card" data-title="open when you're sad" data-note="First, you don't have to explain it or justify it or make it make sense. You're allowed to just be sad. Second, I'm here. Not the &lsquo;text me if you need anything&rsquo; kind of here, the &lsquo;talk to me right now, I'm not going anywhere&rsquo; kind. And if you don't feel like talking, that's fine too. I'll just be annoying until you smile by accident. That's my specialty.">
-          <span class="ow-seal">🩶</span><span class="ow-label">when you're sad</span>
-        </button>
-        <button class="ow-card" data-title="open when you can't sleep" data-note="Same, probably 😭. If it's late and your brain won't shut up, call me. Genuinely. I'd rather be tired tomorrow than know you were lying there awake by yourself. And if I don't pick up, it's because my body betrayed me again. You already know I have a criminal record for that one 🌚">
-          <span class="ow-seal">🌙</span><span class="ow-label">when you can't sleep</span>
-        </button>
-        <button class="ow-card" data-title="open when you're mad at me" data-note="Fair. I probably deserve it. But here's what I want you to know before you decide anything: I'd so much rather you tell me exactly what I did than go quiet on me. I can fix things I know about. And if I messed up, I'm going to apologise properly, not the lazy kind. You've seen the lengths I'll go to 🌚. Just don't let it sit and get heavy. Come argue with me, my love.">
-          <span class="ow-seal">🌚</span><span class="ow-label">when you're mad at me</span>
-        </button>
-        <button class="ow-card" data-title="open when you need to hear it" data-note="You're not too much. You're not a burden. You're not hard to love. I don't know which one you needed today, so take all three. I chose you on purpose, and I keep choosing you on the boring days, the stressful days, and the days you don't feel like yourself. That isn't going anywhere.">
-          <span class="ow-seal">🤍</span><span class="ow-label">when you need to hear it</span>
-        </button>
-        <button class="ow-card" data-title="open when you're happy" data-note="Tell me. Right now. I want the whole story, including the details you think are boring. I don't just want to be the person you come to when things are heavy. I want the good stuff too. Your wins are genuinely my favourite thing to hear about.">
-          <span class="ow-seal">✨</span><span class="ow-label">when you're happy</span>
-        </button>
-      </div>
-    </div>
-
-    <div class="ow-overlay" id="owOverlay">
-      <div class="ow-note">
-        <div class="ow-note-title" id="owNoteTitle"></div>
-        <p class="ow-note-body" id="owNoteBody"></p>
-        <button class="ow-close" id="owClose">close</button>
-      </div>
-    </div>
-
-    <div class="piece reveal" id="bucketPiece">
-      <div class="status-tag status-done">✓ Finished</div>
-      <h2>Things we're going to do 📝</h2>
-      <p class="hint">Straight from the letter. Tap the ones you're most excited for. It's saved just for you.</p>
-      <ul class="bucket-list" id="bucketList">
-        <li data-id="drives"><span class="bucket-check"></span><span class="bucket-txt">Random drives, no destination</span></li>
-        <li data-id="food"><span class="bucket-check"></span><span class="bucket-txt">Late-night food runs</span></li>
-        <li data-id="hands"><span class="bucket-check"></span><span class="bucket-txt">Holding hands while we walk</span></li>
-        <li data-id="hug"><span class="bucket-check"></span><span class="bucket-txt">A hug after a terrible day</span></li>
-        <li data-id="flowers"><span class="bucket-check"></span><span class="bucket-txt">Me, nervous, at your door with flowers</span></li>
-        <li data-id="lost"><span class="bucket-check"></span><span class="bucket-txt">Getting lost somewhere, on purpose or not</span></li>
-        <li data-id="travel"><span class="bucket-check"></span><span class="bucket-txt">Seeing a new country together</span></li>
-        <li data-id="dance"><span class="bucket-check"></span><span class="bucket-txt">One slow dance, no excuses</span></li>
-      </ul>
-    </div>
-
-    <div class="piece reveal" id="distancePiece">
-      <div class="status-tag status-done">✓ Finished</div>
-      <h2>The distance 🌍</h2>
-      <div class="distance-scene">
-        <svg class="distance-path" viewBox="0 0 260 90" preserveAspectRatio="none"><path d="M20,66 Q130,-6 240,66" /></svg>
-        <div class="plane">✈️</div>
-        <div class="pin pin-a"><span class="pin-dot"></span><span class="pin-label">Me, Cairo</span></div>
-        <div class="pin pin-b"><span class="pin-dot"></span><span class="pin-label">You, Nigeria</span></div>
-      </div>
-      <p>Thousands of miles, on paper.</p>
-      <p class="hint">Zero, in every way that's actually mattered so far.</p>
-    </div>
-
-    <div class="piece sky-piece reveal" id="skyPiece">
-      <canvas class="sky-canvas" id="skyCanvas"></canvas>
-      <div class="sky-text">
-        <div class="sky-line">Same sky.</div>
-        <div class="sky-line-2">Different windows.</div>
-        <p class="sky-sub">Whatever you're looking up at tonight, I'm under it too.</p>
-      </div>
-    </div>
-
-    <div class="piece reveal" id="clockPiece">
-      <div class="status-tag status-done">✓ Finished</div>
-      <h2>Right now, for both of us 🕐</h2>
-      <div class="clock-row">
-        <div class="clock-card">
-          <div class="clock-icon" id="clockIconYou">☀️</div>
-          <div class="clock-time" id="clockTimeYou">--:--</div>
-          <div class="clock-label">Me, Cairo</div>
-        </div>
-        <div class="clock-card">
-          <div class="clock-icon" id="clockIconHer">☀️</div>
-          <div class="clock-time" id="clockTimeHer">--:--</div>
-          <div class="clock-label">You, Nigeria</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="piece reveal" id="counterPiece">
-      <div class="status-tag status-done">✓ Finished</div>
-      <h2>Since day one 🕯️</h2>
-      <div class="counter-row">
-        <div class="counter-unit"><div class="counter-num" id="cDays">0</div><div class="counter-label">days</div></div>
-        <div class="counter-unit"><div class="counter-num" id="cHours">0</div><div class="counter-label">hrs</div></div>
-        <div class="counter-unit"><div class="counter-num" id="cMins">0</div><div class="counter-label">min</div></div>
-        <div class="counter-unit"><div class="counter-num" id="cSecs">0</div><div class="counter-label">sec</div></div>
-      </div>
-    </div>
-
-    <div class="piece reveal prayer-piece" id="prayerPiece">
-      <div class="status-tag status-done">✓ Finished</div>
-      <h2>A dua for us 🤍</h2>
-      <p class="reveal">I pray that this is it for both of us.</p>
-      <p class="reveal">I pray that, InshaAllah, you're my last relationship and that I'm yours.</p>
-      <p class="reveal">I pray that one day, InshaAllah, this relationship leads us to marriage.</p>
-      <p class="reveal">And above everything, I pray Allah keeps guiding us and keeps whatever is good for us in our lives. I pray that if we're meant to be together, He makes the path beautiful for us and brings us closer in the right way and at the right time.</p>
-      <p class="reveal signoff">Ameen.</p>
-    </div>
-
-    <div class="piece reveal" id="scratchPiece">
-      <div class="status-tag status-done">✓ Finished</div>
-      <h2>Scratch this 🪙</h2>
-      <p class="hint">Use your finger. There's something under here.</p>
-      <div class="scratch-wrap" id="scratchWrap">
-        <div class="scratch-reveal">Surprise. 🤍<br>No matter how many pieces I add to this page, the real one is simple. I love you, and I'm not going anywhere.</div>
-        <canvas class="scratch-canvas" id="scratchCanvas"></canvas>
-      </div>
-    </div>
-
-    <div class="piece reveal" id="couponPiece">
-      <div class="status-tag status-done">✓ Finished</div>
-      <h2>Redeem whenever 🎟️</h2>
-      <p class="hint">Tap one when you want to cash it in. (I won't actually know, just text me 🌚)</p>
-      <div class="coupon-grid" id="couponGrid">
-        <div class="coupon" data-id="movie"><div class="coupon-txt">Good for one movie night, my pick or yours 🎬</div><div class="coupon-stub">CLAIM</div></div>
-        <div class="coupon" data-id="call"><div class="coupon-txt">Good for me calling you first, no matter what 📞</div><div class="coupon-stub">CLAIM</div></div>
-        <div class="coupon" data-id="texts"><div class="coupon-txt">Good for unlimited annoying good-morning texts 🌚</div><div class="coupon-stub">CLAIM</div></div>
-        <div class="coupon" data-id="hug"><div class="coupon-txt">Good for one hug that lasts way too long 🫂</div><div class="coupon-stub">CLAIM</div></div>
-        <div class="coupon" data-id="food"><div class="coupon-txt">Good for your favorite food, delivered by me in person one day 🍜</div><div class="coupon-stub">CLAIM</div></div>
-        <div class="coupon" data-id="dance"><div class="coupon-txt">Good for one slow dance, no excuses 💃</div><div class="coupon-stub">CLAIM</div></div>
-      </div>
-    </div>
-
     <div class="piece reveal" id="themePiece">
-      <div class="status-tag status-done">✓ Finished</div>
       <h2>One last thing 💜</h2>
       <p>I built this whole thing in my colors. Deep reds, warm creams, the stuff I reach for without thinking.</p>
       <p>But it was never really mine, was it.</p>
@@ -847,6 +827,14 @@
   </section>
 
   <footer>This page grows as I do. Made with love, your boyfriend <span id="footerHeart" class="footer-heart">❤️</span></footer>
+</div>
+
+<div class="ow-overlay" id="owOverlay">
+  <div class="ow-note">
+    <div class="ow-note-title" id="owNoteTitle"></div>
+    <p class="ow-note-body" id="owNoteBody"></p>
+    <button class="ow-close" id="owClose">close</button>
+  </div>
 </div>
 
 <div class="theme-veil" id="themeVeil"></div>
@@ -865,6 +853,7 @@
 <script>
 (function(){
   "use strict";
+  var START = new Date('2026-08-05T14:00:00+03:00');
 
   window.addEventListener('load', function(){
     setTimeout(function(){ document.getElementById('loader').classList.add('hide'); }, 800);
@@ -1034,12 +1023,11 @@
 
   // days-since counter
   (function(){
-    var START = new Date('2026-08-05T14:00:00+03:00').getTime();
     var dEl = document.getElementById('cDays'), hEl = document.getElementById('cHours'),
         mEl = document.getElementById('cMins'), sEl = document.getElementById('cSecs');
     if(!dEl) return;
     function tick(){
-      var diff = Date.now() - START;
+      var diff = Date.now() - START.getTime();
       if(diff < 0) diff = 0;
       var totalSec = Math.floor(diff/1000);
       var days = Math.floor(totalSec/86400);
@@ -1278,6 +1266,46 @@
     });
   })();
 
+  function burstHearts(){
+    var wrap = document.getElementById('particles');
+    var glyphs = ['❤️','💕','💗'];
+    for(var i = 0; i < 24; i++){
+      var el = document.createElement('div');
+      el.className = 'particle';
+      el.textContent = glyphs[Math.floor(Math.random()*glyphs.length)];
+      var size = 14 + Math.random()*18;
+      var left = 20 + Math.random()*60;
+      el.style.left = left + 'vw';
+      el.style.top = 'auto';
+      el.style.bottom = '0px';
+      el.style.fontSize = size + 'px';
+      el.style.setProperty('--bx', (Math.random()*160-80) + 'px');
+      el.style.animation = 'burstUp ' + (1.6 + Math.random()) + 's ease-out forwards';
+      wrap.appendChild(el);
+      (function(node){ setTimeout(function(){ node.remove(); }, 3000); })(el);
+    }
+  }
+
+  // monthly anniversary, on the same day of the month as START
+  (function(){
+    var banner = document.getElementById('annivBanner');
+    if(!banner) return;
+    var now = new Date();
+    if(now.getDate() !== START.getDate()) return;
+    var months = (now.getFullYear() - START.getFullYear()) * 12 + (now.getMonth() - START.getMonth());
+    if(months < 1) return;
+    var label;
+    if(months % 12 === 0){
+      var years = months / 12;
+      label = 'Happy ' + years + (years === 1 ? ' year' : ' years');
+    } else {
+      label = 'Happy ' + months + (months === 1 ? ' month' : ' months');
+    }
+    banner.textContent = label + ', my love 💜';
+    banner.hidden = false;
+    setTimeout(burstHearts, 1700);
+  })();
+
   // hidden easter egg on the footer heart
   (function(){
     var heart = document.getElementById('footerHeart');
@@ -1285,26 +1313,6 @@
     var closeBtn = document.getElementById('eggClose');
     if(!heart || !overlay) return;
     var taps = 0;
-
-    function burstHearts(){
-      var wrap = document.getElementById('particles');
-      var glyphs = ['❤️','💕','💗'];
-      for(var i = 0; i < 24; i++){
-        var el = document.createElement('div');
-        el.className = 'particle';
-        el.textContent = glyphs[Math.floor(Math.random()*glyphs.length)];
-        var size = 14 + Math.random()*18;
-        var left = 20 + Math.random()*60;
-        el.style.left = left + 'vw';
-        el.style.top = 'auto';
-        el.style.bottom = '0px';
-        el.style.fontSize = size + 'px';
-        el.style.setProperty('--bx', (Math.random()*160-80) + 'px');
-        el.style.animation = 'burstUp ' + (1.6 + Math.random()) + 's ease-out forwards';
-        wrap.appendChild(el);
-        (function(node){ setTimeout(function(){ node.remove(); }, 3000); })(el);
-      }
-    }
 
     heart.addEventListener('click', function(){
       taps++;
