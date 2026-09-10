@@ -16,6 +16,7 @@
     --ink:#3a1a24;
     --gold:#d8a657;
     --shadow: 0 10px 30px rgba(92,26,52,0.18);
+    --night-top:#16070f;
   }
 
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
@@ -74,6 +75,21 @@
   }
   .anniv-banner[hidden]{ display:none; }
   @keyframes annivIn{ from{ opacity:0; transform: translateY(-10px) scale(0.9); } to{ opacity:1; transform:none; } }
+  #landing .greeting{ color: var(--wine-bright); font-size:0.95rem; font-style:italic; margin:0 0 0.8rem; opacity:0.9; }
+
+  html.night body{ background: linear-gradient(180deg, var(--night-top) 0%, var(--wine-deep) 100%); }
+  html.night #landing h1{ color: var(--cream-2); }
+  html.night #landing .sub, html.night #landing .greeting, html.night .scroll-hint, html.night footer{ color: var(--pink-soft); }
+  html.night .piece:not(.sky-piece){ background: var(--cream-2); border-color: rgba(255,255,255,0.12); }
+
+  .piece.unlock-piece{ text-align:center; background: linear-gradient(160deg, rgba(201,166,233,0.22), rgba(255,255,255,0.65)); }
+  .piece.unlock-piece p{ text-align:left; font-size:1rem; line-height:1.75; margin-bottom:0.9rem; }
+  .unlock-new{
+    display:inline-block; margin-bottom:0.9rem; padding:0.3rem 0.8rem; border-radius:999px;
+    background: var(--wine-bright); color: var(--cream-2);
+    font-size:0.72rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
+  }
+  .unlock-new[hidden]{ display:none; }
 
   .enter-btn{
     margin-top:2rem; border:none; cursor:pointer; font-size:1.02rem; font-weight:600; font-family:inherit;
@@ -342,6 +358,7 @@
     --ink:#2b1a3a;
     --gold:#d8a657;
     --shadow: 0 10px 30px rgba(74,32,101,0.18);
+    --night-top:#120a1c;
   }
   .theme-btn{
     margin-top:1.4rem; border:none; cursor:pointer; font-family:inherit;
@@ -443,8 +460,9 @@
 
 <section id="landing">
   <div class="anniv-banner" id="annivBanner" hidden></div>
+  <p class="greeting" id="greeting"></p>
   <h1>A little world, for you. 🌷</h1>
-  <p class="sub">Everything past this button, I made thinking of you, my love.</p>
+  <p class="sub" id="landingSub">Everything past this button, I made thinking of you, my love.</p>
 
   <button class="enter-btn" id="enterBtn">Take a peek 🌚</button>
   <div class="scroll-hint">↓</div>
@@ -464,6 +482,14 @@
       <div class="daily-date" id="dailyDate"></div>
       <div class="daily-line" id="dailyLine"></div>
       <div class="daily-foot">a new one every day 🤍</div>
+    </div>
+
+    <div class="piece reveal unlock-piece" id="unlockPiece" hidden>
+      <div class="unlock-new" id="unlockNew" hidden>new 🤍</div>
+      <h2>For coming back 🤍</h2>
+      <p>Seven different days you've opened this. I don't know if you realise how much that means to me.</p>
+      <p>I made this hoping you'd come back to it, and you did, again and again. So this one is only for you.</p>
+      <p>I hope I get to be that for you too. The one you keep coming back to.</p>
     </div>
 
     <div class="piece reveal" id="gardenPiece">
@@ -1273,6 +1299,49 @@
     banner.textContent = label + ', my love 💜';
     banner.hidden = false;
     setTimeout(burstHearts, 1700);
+  })();
+
+  function herHour(){
+    return parseInt(new Intl.DateTimeFormat('en-US', { timeZone:'Africa/Lagos', hour:'numeric', hour12:false }).format(new Date()), 10) % 24;
+  }
+
+  // greeting by her local time; from 11pm to 5am the page goes dark
+  (function(){
+    var g = document.getElementById('greeting');
+    if(!g) return;
+    var h = herHour();
+    if(h >= 23 || h < 5){
+      document.documentElement.classList.add('night');
+      g.textContent = "It's late, my love. Go to sleep, I'll still be here tomorrow 🌙";
+    } else if(h < 12){
+      g.textContent = 'Good morning, my love ☀️';
+    } else if(h < 17){
+      g.textContent = "Hope your day's being kind to you 🤍";
+    } else {
+      g.textContent = 'Good evening, my love ✨';
+    }
+  })();
+
+  // counts distinct days visited (not reloads); a note unlocks on the 7th
+  (function(){
+    var KEY = 'loml-visits';
+    var today = new Date().toLocaleDateString('en-CA');
+    var rec = null;
+    try{ rec = JSON.parse(localStorage.getItem(KEY)); }catch(e){}
+    var returning = !!(rec && rec.days);
+    if(!returning) rec = { days:0, last:'', unlockSeen:false };
+    if(rec.last !== today){ rec.days += 1; rec.last = today; }
+    var unlocked = rec.days >= 7;
+    var fresh = unlocked && !rec.unlockSeen;
+    if(unlocked) rec.unlockSeen = true;
+    try{ localStorage.setItem(KEY, JSON.stringify(rec)); }catch(e){}
+
+    var sub = document.getElementById('landingSub');
+    if(returning && sub) sub.textContent = 'You came back. I was hoping you would 🤍';
+    if(unlocked){
+      document.getElementById('unlockPiece').hidden = false;
+      if(fresh) document.getElementById('unlockNew').hidden = false;
+    }
   })();
 
 })();
